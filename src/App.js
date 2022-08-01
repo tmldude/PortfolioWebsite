@@ -1,19 +1,16 @@
-import { Fragment } from 'react';
-
-import Header from "./Components/Header/Header";
-import DiagonalBox from "./Components/DiagonalBox";
-import TriangleAtBottom from './Components/Bottom/TriangleAtBottom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/home';
+import Boogle from './pages/boogle';
 
 function App() {
-  return (
-    <Fragment>
-      <Header />
-      <main>
-        <DiagonalBox />
-      </main>
-      <TriangleAtBottom/>
-    </Fragment>
-  );
-}
-
-export default App;
+    return (
+      <Router>
+        <Routes>
+          <Route path='/' element={<Home/>}></Route>
+          <Route path='/boogle' element={<Boogle />}></Route>
+        </Routes>
+      </Router>
+    );
+  }
+  
+  export default App;
