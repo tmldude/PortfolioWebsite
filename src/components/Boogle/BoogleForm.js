@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import classes from "./BoogleForm.module.css";
+import "../../sass/main.scss";
 import axios from "axios";
 
 class BoogleForm extends Component {
@@ -28,13 +28,13 @@ class BoogleForm extends Component {
 
   render() {
     return (
-      <div className={classes.input}>
+      <div className="boogle-form">
         <form onSubmit={this.handleSubmit}>
-          <span to="/"> Boogle </span>
-          <label>Type in what you want to search!</label>
+          <span to="/" className="boogle-form__span"> Boogle </span>
+          <label className="boogle-form__label">Type in what you want to search!</label>
           <input
             type="text"
-            className="form-control"
+            className="boogle-form__input"
             placeholder="Type your question!"
             aria-label="Username"
             aria-describedby="basic-addon1"

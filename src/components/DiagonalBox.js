@@ -1,21 +1,25 @@
-import classes from "./DiagonalBox.module.css";
+import "../sass/main.scss";
 
 const DiagonalBox = () => {
   return (
-    <div className={classes.row}>
-      <div className={classes.item} style={{'background-color': '#9b9297'}}>
-        1
+    <section className="section-hero">
+      <div className="row">
+        <div className="col-1-of-2">
+          <div className="parrallelogram">
+            <div className="parrallelogram__shape">CS</div>
+          </div>
+        </div>
+        <div className="col-1-of-2">
+          <div className="parrallelogram">
+            <div className="parrallelogram__shape">Psych</div>
+          </div>
+        </div>
       </div>
-      <div className={classes.item} style={{'background-color': 'blue'}}>
-        2
-      </div>
-      <div className={classes.triangle}>3</div>
-    </div>
-    
+    </section>
   );
 };
 
 export default DiagonalBox;
 // <div className={classes['diagonal-box']}>
-    //   <div className={classes.content}>Hello</div>
-    // </div>
+//   <div className={classes.content}>Hello</div>
+// </div>

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import classes from "./BoogleOutput.module.css";
+import "../../sass/main.scss";
 import axios from "axios";
 
 
@@ -29,11 +29,11 @@ class BoogleOutput extends Component {
       <div>
         {/* <div>{this.state.searchID}</div> */}
         {this.state.details.map((site) => (
-          <div className={classes.output} key={site.url}>
-            <ul>
+          <div className="boogle-output" key={site.url}>
+            <ul className="boogle-output__ul">
               <blockquote>
-                <li>
-                  <h1>{site.text}</h1>
+                <li className="boogle-output__li">
+                  <h1 className="rainbow-h1">{site.text}</h1>
                   <a href={site.url} target="_blank" rel="noreferrer">
                     {site.text}
                   </a>
