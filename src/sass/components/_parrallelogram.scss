@@ -1,0 +1,31 @@
+.parrallelogram {
+  // FUNCTIONALITY
+  perspective: 150rem;
+  -moz-perspective: 150rem;
+  position: relative;
+  height: 62rem;
+
+  &__shape {
+    background-color: yellow;
+    height: 62rem;
+    transition: all 0.8s ease;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    backface-visibility: hidden;
+    overflow: hidden;
+    box-shadow: 0 1.5rem 4rem rgba($color-black, 0.15);
+    z-index: -1;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
+  }
+
+  &:hover &__shape {
+    clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);;
+    background-color: blue;
+    z-index: 1;
+  }
+}
