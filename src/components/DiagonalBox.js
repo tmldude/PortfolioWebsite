@@ -4,7 +4,7 @@ const DiagonalBox = () => {
   return (
     <section className="section-hero">
       <div className="row">
-      <div className="col-1-of-2">
+        <div className="col-1-of-2">
           <div className="parrallelogram">
             <div className="parrallelogram__shape parrallelogram__shape-1">
               <div className="parrallelogram__text">

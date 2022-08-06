@@ -4,3 +4,13 @@
     50%  {background-color: blue;}
     100% {background-color: green;}
   }
+
+
+  @keyframes slide {
+    0% {
+      transform:translateX(-25%);
+    }
+    100% {
+      transform:translateX(25%);
+    }
+  }
