@@ -3,12 +3,15 @@
   perspective: 150rem;
   -moz-perspective: 150rem;
   position: relative;
-  height: 62rem;
+  height: 80rem;
+  margin-top: 6rem;
+  transition: all 2s ease;
 
   &__shape {
-    background-color: yellow;
+    text-align: center;
+    
     height: 62rem;
-    transition: all 0.8s ease;
+    transition: all 2s ease;
     display: inline-block;
     position: absolute;
     top: 0;
@@ -16,16 +19,56 @@
     width: 100%;
     backface-visibility: hidden;
     overflow: hidden;
-    box-shadow: 0 1.5rem 4rem rgba($color-black, 0.15);
+
+    //box-shadow: 0 1rem 2rem rgba($color-black, 0.1);
     z-index: -1;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
+    border-radius: 1rem;
+
+    &-1 {
+      background-color: $color-green;
+    }
+    &-1:hover {
+      background-color: $color-green-dark;
+    }
+
+    &-2 {
+      background-color: $color-pink;
+    }
+
+    &-2:hover {
+      background-color:$color-magenta;
+    }
+
   }
 
-  &:hover &__shape {
-    clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);;
-    background-color: blue;
+  &__shape:hover,
+  &__shape:active {
+    translate: transformY(2rem);
+    height: 66rem;
+    clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%);
+    //background-color: blue;
+    border-radius: 3rem;
+
     z-index: 1;
+
+    
+  }
+
+
+
+  &:hover,
+  &:active {
+    margin-top: 5rem;
+  }
+
+  &__text {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
   }
 }

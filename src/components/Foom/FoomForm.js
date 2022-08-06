@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../../sass/main.scss";
 import axios from "axios";
 
-class BoogleForm extends Component {
+class FoomForm extends Component {
   state = { search: "", searchID: "" };
 
   handleInput = (e) => {
@@ -28,13 +28,13 @@ class BoogleForm extends Component {
 
   render() {
     return (
-      <div className="boogle-form">
+      <div className="foom-form">
         <form onSubmit={this.handleSubmit}>
-          <span to="/" className="boogle-form__span"> Boogle </span>
-          <label className="boogle-form__label">Type in what you want to search!</label>
+          <h1 to="/" className="foom-form__h1"> Foom </h1>
+          {/* <label className="Foom-form__label">Type in what you want to search!</label> */}
           <input
             type="text"
-            className="boogle-form__input"
+            className="foom-form__input"
             placeholder="Type your question!"
             aria-label="Username"
             aria-describedby="basic-addon1"
@@ -42,11 +42,11 @@ class BoogleForm extends Component {
             name="search"
             onChange={this.handleInput}
           />
-          <button type="submit">Search</button>
+          <button className="foom-form__button" type="submit">Search</button>
         </form>
       </div>
     );
   }
 }
 
-export default BoogleForm;
+export default FoomForm;

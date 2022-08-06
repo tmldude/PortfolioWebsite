@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "../../sass/main.scss";
 import axios from "axios";
 
-
 class BoogleOutput extends Component {
   state = {
     details: [],
@@ -28,20 +27,18 @@ class BoogleOutput extends Component {
     return (
       <div>
         {/* <div>{this.state.searchID}</div> */}
-        {this.state.details.map((site) => (
-          <div className="boogle-output" key={site.url}>
-            <ul className="boogle-output__ul">
-              <blockquote>
-                <li className="boogle-output__li">
-                  <h1 className="rainbow-h1">{site.text}</h1>
-                  <a href={site.url} target="_blank" rel="noreferrer">
-                    {site.text}
-                  </a>
-                </li>
-              </blockquote>
-            </ul>
-          </div>
-        ))}
+        <div className="boogle-output">
+          <ul className="boogle-output__ul">
+            {this.state.details.map((site) => (
+              <li className="boogle-output__li" key={site.url}>
+                <h1 className="rainbow-h1">{site.text}</h1>
+                <a href={site.url} target="_blank" rel="noreferrer">
+                  {site.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   }
