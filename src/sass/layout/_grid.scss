@@ -1,46 +1,112 @@
 .row {
-    max-width: $grid-width;
-    margin: 0 auto;
-    
+  max-width: $grid-width;
+  margin: 0 auto;
+
+  &:not(:last-child) {
+    margin-bottom: $gutter-vertical;
+  }
+
+  @include clearfix;
+
+  [class^="col-"] {
+    float: left;
 
     &:not(:last-child) {
-        margin-bottom: $gutter-vertical;
+      margin-right: $gutter-horizontal;
     }
+  }
 
-    @include clearfix;
+  .col-1-of-2 {
+    width: calc((100% - #{$gutter-horizontal}) / 2);
+  }
 
-    [class^="col-"] {
-        float: left;
+  .col-1-of-3 {
+    width: calc((100% - 2 * #{$gutter-horizontal}) / 3);
+  }
 
-        &:not(:last-child) {
-            margin-right: $gutter-horizontal;
-        }
-    }
+  .col-1-of-4 {
+    width: calc((100% - 3 * #{$gutter-horizontal}) / 4);
+  }
 
-    .col-1-of-2 {
-        width: calc((100% - #{$gutter-horizontal}) / 2 );
-        
-    }
+  .col-2-of-3 {
+    width: calc(
+      (2 * (100% - 2 * #{$gutter-horizontal}) / 3) + #{$gutter-horizontal}
+    );
+  }
 
-    .col-1-of-3 {
-        width: calc((100% - 2 * #{$gutter-horizontal}) / 3 );
-    }
+  .col-2-of-4 {
+    width: calc(
+      (2 * (100% - 3 * #{$gutter-horizontal}) / 4) + #{$gutter-horizontal}
+    );
+  }
 
-    .col-1-of-4 {
-        width: calc((100% - 3 * #{$gutter-horizontal}) / 4 );
-    }
+  .col-3-of-4 {
+    width: calc(
+      (3 * (100% - 3 * #{$gutter-horizontal}) / 4) + (2 * #{$gutter-horizontal})
+    );
+  }
+}
 
-    .col-2-of-3 {
-        width: calc((2 * (100% - 2 * #{$gutter-horizontal}) / 3) + #{$gutter-horizontal});
-    }
+.grid {
+  display: grid;
+  height: 100%;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+  grid-template-areas:
+    "intro intro intro intro intro intro intro aboutme aboutme"
+    "intro intro intro intro intro intro intro aboutme aboutme"
+    "compsci compsci compsci foom foom foom psych psych psych"
+    "compsci compsci compsci foom foom foom psych psych psych"
+    "compsci compsci compsci foom foom foom psych psych psych"
+    "thiswebsite thiswebsite footer footer footer footer footer chess chess"
+    "whatsfoom whatsfoom footer footer footer footer footer chess chess";
 
-    .col-2-of-4 {
-        width: calc((2 * (100% - 3 * #{$gutter-horizontal}) / 4) + #{$gutter-horizontal});
-    }
+  [class^="grid__"] {
+    padding: $grid-padding;
+  }
 
-    .col-3-of-4 {
-        width: calc((3 * (100% - 3 * #{$gutter-horizontal}) / 4) + (2 * #{$gutter-horizontal}));
-    }
+  &__intro {
+    grid-area: intro;
+  }
+  &__about-me {
+    grid-area: aboutme;
+  }
+  &__compsci {
+    grid-area: compsci;
+  }
+  &__psych {
+    grid-area: psych;
+  }
+  &__foom {
+    grid-area: foom;
+  }
+  &__this-website {
+    grid-area: thiswebsite;
+  }
+  &__whats-foom {
+    grid-area: whatsfoom;
+  }
+  &__footer {
+    grid-area: footer;
+  }
+  &__chess {
+    grid-area: chess;
+  }
 
-
+  @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(11, 1fr);
+    grid-template-areas:
+      "intro intro intro"
+      "intro intro intro"
+      "aboutme aboutme aboutme"
+      "compsci compsci compsci"
+      "compsci compsci compsci"
+      "foom foom foom"
+      "foom foom foom"
+      "psych psych psych"
+      "psych psych psych"
+      "thiswebsite whatsfoom chess"
+      "footer footer footer";
+  }
 }

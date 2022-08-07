@@ -1,0 +1,75 @@
+[class^="grid-"] {
+  height: 100%;
+  border-radius: 0.5rem;
+}
+
+.grid-intro {
+  background-color: $color-blue-light;
+  text-align: center;
+
+  &__text {
+    font-size: 3rem;
+    text-transform: uppercase;
+    height: 3rem;
+    padding: 2rem;
+    background-image: linear-gradient(to right, $color-blue, $color-blue-dark);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: 2px;
+    transition: all 0.2s;
+
+    @media screen and (min-width: 769px) {
+      &:hover {
+        transform: skewY(2deg) skewX(15deg) scale(1.1);
+        text-shadow: 0.5rem 1rem 2rem rgba($color-black, 0.2);
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      &:active {
+        transform: skewY(2deg) skewX(15deg) scale(1.1);
+        text-shadow: 0.5rem 1rem 2rem rgba($color-black, 0.2);
+      }
+    }
+  }
+
+  &__paragraph {
+    height: 5rem;
+    font-size: 2rem;
+    //text-transform: uppercase;
+    padding: 2rem;
+  }
+}
+
+.grid-about-me {
+  background-color: $color-green-light;
+}
+
+.grid-compsci {
+  background-color: $color-autumn-red;
+}
+
+.grid-psych {
+  background-color: $color-autumn-yellow;
+}
+.grid-foom {
+  background-color: $color-autumn-orange;
+}
+
+.grid-this-website {
+  background-color: $color-purple-light;
+}
+
+.grid-whats-foom {
+  background-color: $color-purple-dark;
+}
+
+.grid-footer {
+  background-color: $color-grey-dark;
+}
+
+.grid-chess {
+  background-color: $color-white;
+  color: black;
+}

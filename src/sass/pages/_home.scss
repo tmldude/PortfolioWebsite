@@ -9,8 +9,22 @@
   bottom:0;
   left:-50%;
   opacity:.5;
-  position:fixed;
   right:-50%;
   top:0;
+  z-index:-1;
+}
+
+.section-grid {
+  background-color: $color-grey-light;
+  height: 120rem;
+  width: auto;
+  padding: 1rem;
+  margin-top: 0rem;
+
+  //text-align: center;
+  //animation:slide 3s ease-in-out infinite alternate;
+  //background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%);
+  
+  //opacity:.5;
   z-index:-1;
 }
