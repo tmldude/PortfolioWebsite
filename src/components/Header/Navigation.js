@@ -8,7 +8,6 @@ const Navigation = () => {
       <label htmlFor="navi-toggle" className="navigation__button">
         <span className="navigation__icon">&nbsp;</span>
       </label>
-      {/* <div className="navigation__background">&nbsp;</div> */}
       <nav className="navigation__nav">
         <ul className="navigation__list">
         <li className="navigation__item">
