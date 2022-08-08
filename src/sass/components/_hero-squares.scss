@@ -1,9 +1,6 @@
-[class^="grid-"] {
+.grid-intro {
   height: 100%;
   border-radius: 0.5rem;
-}
-
-.grid-intro {
   background-color: $color-blue-light;
   text-align: center;
 
@@ -43,33 +40,49 @@
 }
 
 .grid-about-me {
+  height: 100%;
+  border-radius: 0.5rem;
   background-color: $color-green-light;
 }
 
 .grid-compsci {
+  height: 100%;
+  border-radius: 0.5rem;
   background-color: $color-autumn-red;
 }
 
 .grid-psych {
+  height: 100%;
+  border-radius: 0.5rem;
   background-color: $color-autumn-yellow;
 }
 .grid-foom {
+  height: 100%;
+  border-radius: 0.5rem;
   background-color: $color-autumn-orange;
 }
 
 .grid-this-website {
+  height: 100%;
+  border-radius: 0.5rem;
   background-color: $color-purple-light;
 }
 
 .grid-whats-foom {
+  height: 100%;
+  border-radius: 0.5rem;
   background-color: $color-purple-dark;
 }
 
 .grid-footer {
+  height: 100%;
+  border-radius: 0.5rem;
   background-color: $color-grey-dark;
 }
 
 .grid-chess {
+  height: 100%;
+  border-radius: 0.5rem;
   background-color: $color-white;
   color: black;
 }

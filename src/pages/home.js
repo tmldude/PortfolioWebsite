@@ -8,10 +8,9 @@ import HeroSection from "../components/HeroSection/Hero";
 const Home = () => {
   return (
     <Fragment>
-      {/* <Header /> */}
       <main>
         <HeroSection></HeroSection>
-        <DiagonalBox />
+        <DiagonalBox /> 
         
       </main>
       {/* <TriangleAtBottom/> */}
