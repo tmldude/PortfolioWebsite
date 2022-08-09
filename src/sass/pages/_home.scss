@@ -1,9 +1,9 @@
 .section-intro {
   display: flex;
   flex-wrap: nowrap;
-  background-color: $color-white;
+  background-image: use('../../zx9`');
   margin: 1rem;
-  padding: 3rem 3rem;
+  //padding: 3rem 3rem;
   height: 90vh;
   top:0;
   z-index:-1;

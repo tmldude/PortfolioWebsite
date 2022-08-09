@@ -12,7 +12,7 @@ class BoogleOutput extends Component {
     let data;
 
     axios
-      .get("http://localhost:8000/wel/")
+      .get("https://foom-backend-manager.herokuapp.com/wel/")
       .then((res) => {
         data = res.data;
         this.setState({
