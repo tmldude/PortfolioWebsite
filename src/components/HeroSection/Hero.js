@@ -11,8 +11,8 @@ import WhatsFoomBox from "./WhatsFoomBox";
 import FooterBox from "./FooterBox";
 import ChessBox from "./ChessBox";
 
-
 const HeroSection = () => {
+
   return (
     <section className="section-grid">
       <div className="grid">
@@ -42,6 +42,9 @@ const HeroSection = () => {
         </div>
         <div className="grid__chess">
           <ChessBox />
+        </div>
+        <div className="grid__empty">
+
         </div>
       </div>
     </section>

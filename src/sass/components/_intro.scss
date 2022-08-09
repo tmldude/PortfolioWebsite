@@ -1,0 +1,21 @@
+.intro-main-box {
+  display: flex;
+  background-color: $color-white;
+  color: $color-black;
+  //padding: 10rem 20rem;
+  max-width: 30%;
+  max-height: 25%;
+  border-style: 0px solid $color-black;
+  border-left-width: 3rem;
+  border-radius: 2px;
+  text-align: center;
+
+  h1 {
+    margin: 3rem;
+  }
+
+  p {
+    margin-top: 5rem;
+    margin-right: 2rem;
+  }
+}

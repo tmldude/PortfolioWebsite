@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
+
 
 const PsychBox = () => {
   return (
-    <div className="grid-psych">psych</div>
-  )
-}
+    <div className="grid-psych">
+    </div>
+  );
+};
 
-export default PsychBox
+export default PsychBox;

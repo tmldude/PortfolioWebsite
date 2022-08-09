@@ -1,3 +1,15 @@
+.section-intro {
+  display: flex;
+  flex-wrap: nowrap;
+  background-color: $color-white;
+  margin: 1rem;
+  padding: 3rem 3rem;
+  height: 90vh;
+  top:0;
+  z-index:-1;
+}
+
+
 .section-hero {
   background-color: $color-grey-light;
   padding: 0rem 0 0rem 0;

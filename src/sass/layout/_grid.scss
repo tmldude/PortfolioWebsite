@@ -50,16 +50,16 @@
 .grid {
   display: grid;
   height: 100%;
-  grid-template-columns: repeat(9, 1fr);
-  grid-template-rows: repeat(7, 1fr);
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
   grid-template-areas:
-    "intro intro intro intro intro intro intro aboutme aboutme"
-    "intro intro intro intro intro intro intro aboutme aboutme"
-    "compsci compsci compsci foom foom foom psych psych psych"
-    "compsci compsci compsci foom foom foom psych psych psych"
-    "compsci compsci compsci foom foom foom psych psych psych"
-    "thiswebsite thiswebsite footer footer footer footer footer chess chess"
-    "whatsfoom whatsfoom footer footer footer footer footer chess chess";
+    "aboutme 1fr intro intro intro intro intro intro intro empty"
+    "aboutme 1fr intro intro intro intro intro intro intro empty"
+    "compsci compsci compsci foom foom foom psych psych psych psych"
+    "compsci compsci compsci foom foom foom psych psych psych psych"
+    "compsci compsci compsci foom foom foom psych psych psych psych"
+    "thiswebsite thiswebsite footer footer footer footer footer chess chess chess"
+    "whatsfoom whatsfoom footer footer footer footer footer chess chess chess";
 
   [class^="grid__"] {
     padding: $grid-padding;
@@ -91,6 +91,10 @@
   }
   &__chess {
     grid-area: chess;
+  }
+
+  &__empty{
+    grid-area: empty;
   }
 
   @media screen and (max-width: 768px) {
