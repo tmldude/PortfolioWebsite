@@ -13,7 +13,7 @@ class FoomForm extends Component {
 
   handleSubmit = (e) => {
     axios
-      .post("https://foom-backend-manager.herokuapp.com/wel/", {
+      .post(process.env.REACT_APP_BACK, {
         search: this.state.search,
         searchID: Math.random().toString(),
       })

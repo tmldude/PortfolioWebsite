@@ -10,9 +10,8 @@ class BoogleOutput extends Component {
 
   componentDidMount() {
     let data;
-
     axios
-      .get("https://foom-backend-manager.herokuapp.com/wel/")
+      .get(process.env.REACT_APP_BACK)
       .then((res) => {
         data = res.data;
         this.setState({
@@ -35,8 +34,9 @@ class BoogleOutput extends Component {
                 target="_blank"
                 rel="noreferrer"
                 className="foom-link"
+                key={site.url}
               >
-                <li className="boogle-output__li" key={site.url}>
+                <li className="boogle-output__li" >
                   {/* <h1 className="rainbow-h1">{site.text}</h1> */}
 
                   {site.text === "" ? site.url : site.text}
