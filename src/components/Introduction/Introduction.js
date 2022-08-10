@@ -1,11 +1,17 @@
 import React from "react";
-import '../../sass/main.scss'
-import starImage from '../../images/star-background.jpg'
+import "../../sass/main.scss";
+import starImage from "../../images/star-background.jpg";
 
 const Introduction = () => {
   return (
     <section className="section-intro">
-      <img src={starImage} alt="star background"></img>
+      <div className="intro-image-box">
+        <img
+          src={starImage}
+          alt="star background"
+          className="intro-image-box__image"
+        ></img>
+      </div>
       <div className="intro-main-box">
         <h1>Teddy's Stuff</h1>
         <p>

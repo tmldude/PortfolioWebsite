@@ -30,12 +30,18 @@ class BoogleOutput extends Component {
         <div className="boogle-output">
           <ul className="boogle-output__ul">
             {this.state.details.map((site) => (
-              <li className="boogle-output__li" key={site.url}>
-                <h1 className="rainbow-h1">{site.text}</h1>
-                <a href={site.url} target="_blank" rel="noreferrer" className="foom-link">
-                  {site.text === '' ? (site.url) : (site.text)}
-                </a>
-              </li>
+              <a
+                href={site.url}
+                target="_blank"
+                rel="noreferrer"
+                className="foom-link"
+              >
+                <li className="boogle-output__li" key={site.url}>
+                  {/* <h1 className="rainbow-h1">{site.text}</h1> */}
+
+                  {site.text === "" ? site.url : site.text}
+                </li>
+              </a>
             ))}
           </ul>
         </div>

@@ -1,12 +1,18 @@
 .section-intro {
   display: flex;
-  flex-wrap: nowrap;
-  background-image: use('../../zx9`');
+  //flex-wrap: nowrap;
+  justify-content: space-between;
   margin: 1rem;
-  //padding: 3rem 3rem;
+  background-color: $color-white;
+  padding: 3rem 3rem;
+  width: device-width;
   height: 90vh;
   top:0;
   z-index:-1;
+
+  @media screen and (max-width: 1280px){
+    flex-direction: column;
+  }
 }
 
 
@@ -14,6 +20,7 @@
   background-color: $color-grey-light;
   padding: 0rem 0 0rem 0;
   margin-top: 1rem;
+  width: device-width;
 
   text-align: center;
   //animation:slide 3s ease-in-out infinite alternate;
@@ -29,7 +36,7 @@
 .section-grid {
   background-color: $color-grey-light;
   height: 120rem;
-  width: auto;
+  width: device-width;
   padding: 1rem;
   margin-top: 0rem;
 
