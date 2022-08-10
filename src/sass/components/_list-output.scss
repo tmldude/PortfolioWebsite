@@ -6,11 +6,15 @@
   left: 50%;
   transform: translateX(-50%);
 
-  &__ul {    
+  ul {    
+    background-color: darken($color-green-light, 12%);
+    position: relative;
     list-style: none;
   }
 
-  &__li {
+  li {
+    position: relative;
+    max-width: device-width;
     border: 1px solid $boogle-output-border;
     padding: 0.5rem;
   }

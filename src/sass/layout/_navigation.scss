@@ -16,6 +16,13 @@
     text-align: center;
     cursor: pointer;
     user-select: none;
+
+    @media screen and (max-width: 768px) {
+      top: 2rem;
+      right: 2rem;
+      height: 4rem;
+      width: 4rem;
+    }
   }
 
   &__nav {
@@ -31,6 +38,10 @@
     width: 100%;
     transition: all 0.8s ease;
     //cubic-bezier(0.68, -0.6, 0.32, 1.6)
+
+    @media screen and (max-width: 768px) {
+      top: 8rem;
+    }
   }
 
   &__list {
@@ -64,6 +75,12 @@
       );
       background-size: 230%;
       transition: all 0.5s;
+
+      @media screen and (max-width: 768px) {
+        font-size: 1rem;
+        font-weight: 300;
+        padding: .5rem 1rem;
+      }
     }
 
     &:hover,
@@ -105,33 +122,75 @@
 
     &::before {
       top: -1rem;
+      @media screen and (max-width: 768px) {
+        margin-top: 0rem;
+        width: 2rem;
+        top: -0.7rem;
+      }
     }
     &::after {
       top: 1rem;
+      @media screen and (max-width: 768px) {
+        margin-top: .5rem;
+        width: 2rem;
+        top: .2rem;
+      }
+    }
+    @media screen and (max-width: 768px) {
+      margin-top: 2rem;
+      width: 2rem;
     }
   }
 
   &__button:hover &__icon:before {
     top: -1.2rem;
+
+    @media screen and (max-width: 768px) {
+      margin-top: 0rem;
+      width: 2rem;
+      top: -0.9rem;
+    }
   }
 
   &__button:hover &__icon:after {
     top: 1.2rem;
+
+    @media screen and (max-width: 768px) {
+      margin-top: .5rem;
+      width: 2rem;
+      top: .4rem;
+    }
   }
 
   &__checkbox:checked + &__button &__icon {
     background-color: transparent;
   }
+
   &__checkbox:checked + &__button &__icon::before {
     transform: translateY(1rem) rotate(45deg);
+    @media screen and (max-width: 768px) {
+      transform: translateY(.7rem) rotate(45deg);
+    }
   }
   &__checkbox:checked + &__button &__icon::after {
     transform: translateY(-1rem) rotate(-45deg);
+
+    @media screen and (max-width: 768px) {
+      transform: translateY(-.7rem) rotate(-45deg);
+    }
   }
   &__checkbox:checked + &__button:hover &__icon::before {
     transform: scale(1.1) rotate(45deg);
+
+    @media screen and (max-width: 768px) {
+      transform: translateY(.28rem) rotate(45deg);
+    }
   }
   &__checkbox:checked + &__button:hover &__icon::after {
     transform: scale(1.1) rotate(-45deg);
+
+    @media screen and (max-width: 768px) {
+      transform: translateY(-.28rem) rotate(-45deg);
+    }
   }
 }

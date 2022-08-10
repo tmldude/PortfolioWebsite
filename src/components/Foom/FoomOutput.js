@@ -32,8 +32,8 @@ class BoogleOutput extends Component {
             {this.state.details.map((site) => (
               <li className="boogle-output__li" key={site.url}>
                 <h1 className="rainbow-h1">{site.text}</h1>
-                <a href={site.url} target="_blank" rel="noreferrer">
-                  {site.text}
+                <a href={site.url} target="_blank" rel="noreferrer" className="foom-link">
+                  {site.text === '' ? (site.url) : (site.text)}
                 </a>
               </li>
             ))}

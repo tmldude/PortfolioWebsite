@@ -1,10 +1,12 @@
 .foom-form {
   margin: 2rem auto;
   padding: 1rem;
-  width: 90%;
+  width: 35rem;
   max-width: 40rem;
+  text-align: center;
 
-  &__h1 {
+  h1 {
+    position: relative;
     font-size: 20rem;
     text-transform: uppercase;
     font-weight: 700;
@@ -14,28 +16,32 @@
         $color-blue-dark,
         $color-blue-light
       );
-    transform: translateX(-21rem);
+    //transform: translateX(-21rem);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     letter-spacing: 2px;
+    transform: translateX(-14rem);
     transition: all 0.7s;
     margin: 0;
+    
 
     &:hover {
       color: $color-blue-light;
     }
 
-    &:before {
-      translate: transformX(5rem);
+    @media screen and (max-width: 1280px) {
+      font-size: 17.5rem;
+      transform: translateX(-10rem);
     }
+    @media screen and (max-width: 768px) {
+      font-size: 10rem;
+      transform: translateX(0);
 
-    &:hover:before {
-      translate: transformX(5rem);
     }
   }
 
-  &__label {
+  label {
     padding-top: 0rem;
     color: #e766ca;
     display: block;
@@ -43,13 +49,17 @@
     margin-bottom: 0.5rem;
   }
 
-  &__input {
-    display: block;
+  input {
+    display: inline-block;
     width: 100%;
     border: 1px solid $color-grey-light;
     padding: 0.15rem;
     margin-bottom: 0.5rem;
     font-weight: 700;
+
+    @media screen and (max-width: 1000px) {
+      width: 75%;
+    }
   }
 
 }
