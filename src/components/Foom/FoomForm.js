@@ -6,7 +6,6 @@ class FoomForm extends Component {
   state = {
     search: "",
     searchID: "",
-    debug: true,
   };
   
   handleInput = (e) => {
@@ -17,7 +16,7 @@ class FoomForm extends Component {
 
   handleSubmit = (e) => {
     axios
-      .post(this.state.debug ? "http://127.0.0.1:8000/wel/" : process.env.REACT_APP_BACK, {
+      .post(process.env.REACT_APP_BACK_POST, {
         search: this.state.search,
         searchID: Math.random().toString(),
       })

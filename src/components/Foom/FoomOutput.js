@@ -2,6 +2,18 @@ import React, { Component } from "react";
 import "../../sass/main.scss";
 import axios from "axios";
 
+const dataExtractor = (data) => {
+  let reorganized = [];
+  for (const key in data) {
+    reorganized.push({
+      url: data[key].url,
+      text: data[key].text,
+      num: key,
+    });
+  }
+  return reorganized;
+};
+
 class BoogleOutput extends Component {
   state = {
     details: [],
@@ -11,11 +23,12 @@ class BoogleOutput extends Component {
   componentDidMount() {
     let data;
     axios
-      .get(process.env.REACT_APP_BACK)
+      .get(process.env.REACT_APP_BACK_GET)
       .then((res) => {
         data = res.data;
+        console.log(data)
         this.setState({
-          details: data.webData,
+          details: dataExtractor(data.webData),
           searchID: data.searchID,
         });
       })
@@ -28,18 +41,18 @@ class BoogleOutput extends Component {
         {/* <div>{this.state.searchID}</div> */}
         <div className="boogle-output">
           <ul className="boogle-output__ul">
-            {this.state.details.map((site) => (
+            {this.state.details.map((data) => (
               <a
-                href={site.url}
+                href={data.url}
                 target="_blank"
                 rel="noreferrer"
                 className="foom-link"
-                key={site.url}
+                key={data.num}
               >
-                <li className="boogle-output__li" >
+                <li className="boogle-output__li">
                   {/* <h1 className="rainbow-h1">{site.text}</h1> */}
 
-                  {site.text === "" ? site.url : site.text}
+                  {data.text === "" ? data.url : data.text}
                 </li>
               </a>
             ))}
