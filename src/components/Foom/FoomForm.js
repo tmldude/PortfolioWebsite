@@ -3,8 +3,12 @@ import "../../sass/main.scss";
 import axios from "axios";
 
 class FoomForm extends Component {
-  state = { search: "", searchID: "" };
-
+  state = {
+    search: "",
+    searchID: "",
+    debug: true,
+  };
+  
   handleInput = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
@@ -13,7 +17,7 @@ class FoomForm extends Component {
 
   handleSubmit = (e) => {
     axios
-      .post(process.env.REACT_APP_BACK, {
+      .post(this.state.debug ? "http://127.0.0.1:8000/wel/" : process.env.REACT_APP_BACK, {
         search: this.state.search,
         searchID: Math.random().toString(),
       })
@@ -30,7 +34,10 @@ class FoomForm extends Component {
     return (
       <div className="foom-form">
         <form onSubmit={this.handleSubmit}>
-          <h1 to="/" className="foom-form__h1"> Foom </h1>
+          <h1 to="/" className="foom-form__h1">
+            {" "}
+            Foom{" "}
+          </h1>
           {/* <label className="Foom-form__label">Type in what you want to search!</label> */}
           <input
             type="text"
@@ -42,7 +49,9 @@ class FoomForm extends Component {
             name="search"
             onChange={this.handleInput}
           />
-          <button className="foom-form__button" type="submit">Search</button>
+          <button className="foom-form__button" type="submit">
+            Search
+          </button>
         </form>
       </div>
     );

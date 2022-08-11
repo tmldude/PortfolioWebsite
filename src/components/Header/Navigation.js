@@ -9,29 +9,22 @@ const Navigation = () => {
         className="navigation__checkbox"
         id="navi-toggle"
       />
-      <label htmlFor="navi-toggle" className="navigation__button">
+      <label
+        htmlFor="navi-toggle"
+        className="navigation__button"
+      >
         <span className="navigation__icon">&nbsp;</span>
       </label>
       <nav className="navigation__nav">
         <ul className="navigation__list">
           <li className="navigation__item">
             <a href="/" className="navigation__link">
+              FOOM
+            </a>
+          </li>
+          <li className="navigation__item">
+            <a href="/home" className="navigation__link">
               Home
-            </a>
-          </li>
-          <li className="navigation__item">
-            <a href="/about" className="navigation__link">
-              About Me
-            </a>
-          </li>
-          <li className="navigation__item">
-            <a href="/compsci" className="navigation__link">
-              Computer Science
-            </a>
-          </li>
-          <li className="navigation__item">
-            <a href="/psych" className="navigation__link">
-              Psychology
             </a>
           </li>
           <li className="navigation__item">
@@ -40,10 +33,20 @@ const Navigation = () => {
             </a>
           </li>
           <li className="navigation__item">
+            <a href="/about" className="navigation__link">
+              About Me
+            </a>
+          </li>
+          <li className="navigation__item">
+            <a href="/chess" className="navigation__link">
+              Huh? FOOM
+            </a>
+          </li>
+          {/* <li className="navigation__item">
             <a href="/foom" className="navigation__link">
               Foom
             </a>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </div>

@@ -8,18 +8,18 @@
     height: 7.5rem;
     width: 7.5rem;
     position: fixed;
-    top: 3rem;
-    right: 3rem;
+    top: 2rem;
+    right: 2rem;
     border-radius: 2px;
     z-index: 2000;
-    box-shadow: 0 1rem 3rem rgba($color-black, 0.15);
+    box-shadow: 0 1rem 3rem rgba($color-black, 0.2);
     text-align: center;
     cursor: pointer;
     user-select: none;
 
     @media screen and (max-width: 768px) {
-      top: 2rem;
-      right: 2rem;
+      top: 1rem;
+      right: 1rem;
       height: 4rem;
       width: 4rem;
     }
@@ -28,8 +28,8 @@
   &__nav {
     height: 100vh;
     position: fixed;
-    top: 12rem;
-    right: 0;
+    top: 11rem;
+    right: 0.5rem;
     z-index: 1500;
 
     pointer-events: none;
@@ -40,7 +40,8 @@
     //cubic-bezier(0.68, -0.6, 0.32, 1.6)
 
     @media screen and (max-width: 768px) {
-      top: 8rem;
+      top: 6rem;
+      right: 0;
     }
   }
 
@@ -63,7 +64,7 @@
       font-size: 1.8rem;
       font-weight: 500;
       padding: 1rem 2rem;
-      color: $color-white;
+      color: darken($color-white, 5%);
       text-decoration: none;
       text-transform: uppercase;
       border-radius: 2px;
@@ -71,7 +72,7 @@
         120deg,
         darken($color-grey-dark, 18%) 0%,
         darken($color-grey-dark, 18%) 50%,
-        $color-white 50%
+        darken($color-white, 5%) 50%
       );
       background-size: 230%;
       transition: all 0.5s;
@@ -79,15 +80,26 @@
       @media screen and (max-width: 768px) {
         font-size: 1rem;
         font-weight: 300;
-        padding: .5rem 1rem;
+        padding: 0.5rem 1rem;
+        transform: translateX(.5rem);
       }
     }
 
     &:hover,
     &:active {
+      box-shadow: 0 1rem 3rem rgba($color-black, 0.3);
       background-position: 100%;
       color: $color-black;
       transform: translateX(-1rem);
+    }
+    @media screen and (max-width: 768px) {
+      &:hover,
+      &:active {
+        top: 6rem;
+        right: 0;        
+        transform: translateX(.5rem);
+
+      }
     }
   }
 
@@ -131,9 +143,9 @@
     &::after {
       top: 1rem;
       @media screen and (max-width: 768px) {
-        margin-top: .5rem;
+        margin-top: 0.5rem;
         width: 2rem;
-        top: .2rem;
+        top: 0.2rem;
       }
     }
     @media screen and (max-width: 768px) {
@@ -156,9 +168,9 @@
     top: 1.2rem;
 
     @media screen and (max-width: 768px) {
-      margin-top: .5rem;
+      margin-top: 0.5rem;
       width: 2rem;
-      top: .4rem;
+      top: 0.4rem;
     }
   }
 
@@ -169,28 +181,28 @@
   &__checkbox:checked + &__button &__icon::before {
     transform: translateY(1rem) rotate(45deg);
     @media screen and (max-width: 768px) {
-      transform: translateY(.7rem) rotate(45deg);
+      transform: translateY(0.7rem) rotate(45deg);
     }
   }
   &__checkbox:checked + &__button &__icon::after {
     transform: translateY(-1rem) rotate(-45deg);
 
     @media screen and (max-width: 768px) {
-      transform: translateY(-.7rem) rotate(-45deg);
+      transform: translateY(-0.7rem) rotate(-45deg);
     }
   }
   &__checkbox:checked + &__button:hover &__icon::before {
     transform: scale(1.1) rotate(45deg);
 
     @media screen and (max-width: 768px) {
-      transform: translateY(.28rem) rotate(45deg);
+      transform: translateY(0.28rem) rotate(45deg);
     }
   }
   &__checkbox:checked + &__button:hover &__icon::after {
     transform: scale(1.1) rotate(-45deg);
 
     @media screen and (max-width: 768px) {
-      transform: translateY(-.28rem) rotate(-45deg);
+      transform: translateY(-0.28rem) rotate(-45deg);
     }
   }
 }

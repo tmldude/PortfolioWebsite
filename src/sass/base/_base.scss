@@ -10,14 +10,15 @@
 
 html {
   font-size: 62.5%; //defines what 1rem is
+  margin: 0px;
 }
 
 body {
-  margin: 0;
+  margin: 0px;
   margin-top: 0rem;
-  max-width: screen-width;
+  max-width: device-width;
   //padding: 3rem;
-  background: $color-grey-dark;
+  background: $color-grey-dark; 
   
 
 }

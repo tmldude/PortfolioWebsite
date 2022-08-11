@@ -1,6 +1,7 @@
 .boogle-background {
     background-color: darken($color-white, 10%);
-    width: screen-width;
+    width: device-width;
+    margin-right: -5px;
     height: 100%;
     padding-top: 1rem;
     padding-bottom: 15rem;
