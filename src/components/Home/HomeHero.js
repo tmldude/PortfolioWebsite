@@ -1,6 +1,6 @@
-import "../sass/main.scss";
+import "../../sass/main.scss";
 
-const DiagonalBox = () => {
+const HomeHero = () => {
   return (
     <section className="section-hero">
       <div className="row">
@@ -27,7 +27,7 @@ const DiagonalBox = () => {
   );
 };
 
-export default DiagonalBox;
+export default HomeHero;
 // <div className={classes['diagonal-box']}>
 //   <div className={classes.content}>Hello</div>
 // </div>

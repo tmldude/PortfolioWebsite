@@ -1,12 +1,12 @@
 import React, { Fragment } from "react";
 import "../sass/main.scss";
 
-const Psych = () => {
+const WhatFoom = () => {
   return (
     <Fragment>
-      <header>Psych</header>
+      <header>FOOM what?!?</header>
     </Fragment>
   );
 };
 
-export default Psych;
+export default WhatFoom;

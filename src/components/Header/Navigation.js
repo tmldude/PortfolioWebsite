@@ -38,7 +38,7 @@ const Navigation = () => {
             </a>
           </li>
           <li className="navigation__item">
-            <a href="/chess" className="navigation__link">
+            <a href="/whatfoom" className="navigation__link">
               Huh? FOOM
             </a>
           </li>

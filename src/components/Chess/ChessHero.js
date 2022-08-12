@@ -2,9 +2,9 @@ import React from "react";
 import "../../sass/main.scss";
 import starImage from "../../images/star-background.jpg";
 
-const Introduction = () => {
+const ChessHero = () => {
   return (
-    <section className="section-intro">
+    <section className="section-chess">
       <div className="intro-image-box">
         <img
           src={starImage}
@@ -23,4 +23,4 @@ const Introduction = () => {
   );
 };
 
-export default Introduction;
+export default ChessHero;

@@ -5,11 +5,10 @@ import "./sass/main.scss";
 
 import Home from "./pages/home";
 import Foom from "./pages/foom";
-// import Compsci from './pages/compsci';
-// import Psych from './pages/psych';
 import AboutMe from "./pages/aboutme";
 import Chess from "./pages/chess";
 import PageNotFound from "./pages/pagenotfound";
+import WhatFoom from "./pages/whatFoom";
 
 function App() {
   return (
@@ -21,6 +20,7 @@ function App() {
         <Route path="/home" element={<Home />}></Route>
         <Route path="/chess" element={<Chess />}></Route>
         <Route path="/about" element={<AboutMe />}></Route>
+        <Route path="/whatfoom" element={<WhatFoom />}></Route>
         
         <Route path="*" element={<PageNotFound />}></Route>
       </Routes>
