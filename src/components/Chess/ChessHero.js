@@ -9,8 +9,8 @@ const ChessHero = () => {
       <div className="chess-main-box">
         <h1>Chess Engine</h1>
         <p>
-          At The moment, I am copying the game from my Python version. Work in
-          progress
+          To play, click on the piece and then the square you want to move it to. Then click again and wait for the bot to play.
+          Features still unimplemented: castling, promotion, smarter bot
         </p>
         {/* Select Color and play against my engine!
         <button className="chess-button chess-button__white">white</button>
