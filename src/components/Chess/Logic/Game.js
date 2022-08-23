@@ -1,17 +1,19 @@
-import PieceUI from "../UI/PieceUI";
 import React from "react";
+
+import PieceUI from "../UI/PieceUI";
 import { pieceImage } from "../UI/ChessConfigUI";
 import BoardUI from "../UI/BoardUI";
 import {
   bishopMove,
   kingMove,
   knightMove,
-  //   letToNum,
-  //   numToLet,
+  letToNum,
+  numToLet,
   pawnMoveBlack,
   pawnMoveWhite,
   queenMove,
   rookMove,
+  checkKingAttacked,
 } from "./Piece";
 
 const startingMap = {
@@ -93,10 +95,11 @@ class Game extends React.Component {
       blackKingIndex: "e8",
       whiteMove: true,
       lastMove: [],
+      humanMove: true,
     };
   }
 
-  move(start, end) {
+  possibleMoves = (start) => {
     let newLoc = this.state.pieceLoc;
     let selectedPiece = newLoc[start];
     let moves = [];
@@ -117,56 +120,163 @@ class Game extends React.Component {
       moves = kingMove(start, newLoc, this.state.whiteMove);
     }
 
-    let tempLastMoves = [];
-    if (moves.includes(end)) {
-      //   tempLastMoves.push(this.pieceLoc[start]);
-      //   tempLastMoves.push(this.pieceLoc[end]);
-      newLoc[end] = selectedPiece;
-      newLoc[start] = undefined;
-    } else {
-      console.log("no moves");
+    let checked = [];
+    for (let move of moves) {
+      let copy = {};
+      Object.assign(copy, this.state.pieceLoc);
+      let temp = copy[start];
+      copy[move] = temp;
+      copy[start] = undefined;
+      let checks = [];
+      if (selectedPiece.includes("king")) {
+        checks = checkKingAttacked(copy, move, this.state.whiteMove);
+      } else {
+        if (this.state.whiteMove) {
+          checks = checkKingAttacked(
+            copy,
+            this.state.whiteKingIndex,
+            this.state.whiteMove
+          );
+        } else {
+          checks = checkKingAttacked(
+            copy,
+            this.state.blackKingIndex,
+            this.state.whiteMove
+          );
+        }
+      }
+      if (checks.length === 0) {
+        checked.push(move);
+      }
     }
 
+    return checked;
+  };
+
+  selectedTileHandler = (e) => {
+    if (!this.state.humanMove) {
+      this.robotInputHandler();
+    } else {
+      if (
+        this.state.pieceLoc[e.target.id] === undefined &&
+        this.state.selectedPieces.length === 0
+      ) {
+        console.log("you selected nothing");
+      } else if (this.state.selectedPieces.length === 0) {
+        if (
+          this.state.whiteMove &&
+          this.state.pieceLoc[e.target.id].charAt(0) === "b"
+        ) {
+          console.log("choose a white piece");
+        } else if (
+          !this.state.whiteMove &&
+          this.state.pieceLoc[e.target.id].charAt(0) === "w"
+        ) {
+          console.log("choose a black piece");
+        } else {
+          this.setState((state) => {
+            return { ...state, selectedPieces: [e.target.id] };
+          });
+        }
+      } else if (
+        this.state.selectedPieces.length === 1 &&
+        this.state.selectedPieces[0] === e.target.id
+      ) {
+        this.setState((state) => {
+          return { ...state, selectedPieces: [] };
+        });
+      } else {
+        console.log("move attempt......");
+        this.humanInputHandler(this.state.selectedPieces[0], e.target.id);
+      }
+    }
+  };
+
+  robotInputHandler = () => {
+    //only works for black first
+    let allRoboMoves = [];
+    for (const [key, val] of Object.entries(this.state.pieceLoc)) {
+      if (val !== undefined && val.charAt(0) === "b") {
+        let posMoves = this.possibleMoves(key);
+        for (let move of posMoves) {
+          allRoboMoves.push([key, move]);
+        }
+      }
+    }
+    let randElement =
+      allRoboMoves[Math.floor(Math.random() * allRoboMoves.length)];
+
+    console.log(allRoboMoves);
+    this.moveFinalizer(randElement[0], randElement[1]);
+  };
+
+  humanInputHandler = (start, end) => {
+    let allPosMoves = this.possibleMoves(start);
+    if (allPosMoves.includes(end)) {
+      this.moveFinalizer(start, end);
+    } else {
+      console.log("no move");
+      this.setState((state) => {
+        return {
+          ...state,
+          selectedPieces: [],
+        };
+      });
+    }
+  };
+
+  moveFinalizer = (start, end) => {
+    let newLoc = this.state.pieceLoc;
+    let selectedPiece = newLoc[start];
+    let tempLastMoves = [start, end];
+
+    if (
+      (selectedPiece === "black_pawn" &&
+        newLoc[this.state.lastMove[1]] === "white_pawn") ||
+      (selectedPiece === "white_pawn" &&
+        newLoc[this.state.lastMove[1]] === "black_pawn")
+    ) {
+      if (
+        newLoc[end] === undefined &&
+        (tempLastMoves[1].charAt(0) ===
+          numToLet[letToNum[tempLastMoves[0].charAt(0)] + 1] ||
+          tempLastMoves[1].charAt(0) ===
+            numToLet[letToNum[tempLastMoves[0].charAt(0)] - 1])
+      ) {
+        newLoc[this.state.lastMove[1]] = undefined;
+      }
+    }
+
+    newLoc[end] = newLoc[start];
+    newLoc[start] = undefined;
+
+    if (selectedPiece === "white_king") {
+      this.setState((state) => {
+        return {
+          ...state,
+          whiteKingIndex: end,
+        };
+      });
+    }
+    if (selectedPiece === "black_king") {
+      this.setState((state) => {
+        return {
+          ...state,
+          blackKingIndex: end,
+        };
+      });
+    }
     this.setState((state) => {
       return {
         ...state,
         pieceLoc: newLoc,
         lastMove: tempLastMoves,
         selectedPieces: [],
+        whiteMove: !state.whiteMove,
+        humanMove: !state.humanMove,
       };
     });
-  }
-
-  selectedTileHandler = (e) => {
-    if (
-      this.state.pieceLoc[e.target.id] === undefined &&
-      this.state.selectedPieces.length === 0
-    ) {
-      console.log("you selected nothing");
-    } else if (this.state.selectedPieces.length === 0) {
-      this.setState((state) => {
-        return { ...state, selectedPieces: [e.target.id] };
-      });
-    } else if (
-      this.state.selectedPieces.length === 1 &&
-      this.state.selectedPieces[0] === e.target.id
-    ) {
-      this.setState((state) => {
-        return { ...state, selectedPieces: [] };
-      });
-    } else {
-      console.log("moving");
-      this.setState((state) => {
-        return {
-          ...state,
-          selectedPieces: state.selectedPieces.push(e.target.id),
-        };
-      });
-      this.move(this.state.selectedPieces[0], e.target.id);
-    }
-    // } else {
-    //   console.log("you selected nothing");
-    // }
+    console.log("move success");
   };
 
   buildBoard = () => {
