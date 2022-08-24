@@ -1,9 +1,24 @@
 import React from "react";
 
 import PieceUI from "../UI/PieceUI";
-import { pieceImage } from "../UI/ChessConfigUI";
+import {
+  pieceImage,
+  posWhitePromos,
+  posBlackPromos,
+  startingMap,
+  horizontalAxis,
+  veritcalAxis,
+  beatMachineText,
+  // machineWinsText,
+  // whiteWinsText,
+  // blackWinsText,
+  boardDarkTileColor,
+  boardTextColor,
+  boardLightTileColor,
+} from "../ChessConfig";
 import BoardUI from "../UI/BoardUI";
 import {
+  ChessPiece,
   bishopMove,
   kingMove,
   knightMove,
@@ -14,94 +29,40 @@ import {
   queenMove,
   rookMove,
   checkKingAttacked,
+  attemptCastle,
 } from "./Piece";
 
-const startingMap = {
-  a1: "white_rook",
-  b1: "white_knight",
-  c1: "white_bishop",
-  d1: "white_queen",
-  e1: "white_king",
-  f1: "white_bishop",
-  g1: "white_knight",
-  h1: "white_rook",
-  a2: "white_pawn",
-  b2: "white_pawn",
-  c2: "white_pawn",
-  d2: "white_pawn",
-  e2: "white_pawn",
-  f2: "white_pawn",
-  g2: "white_pawn",
-  h2: "white_pawn",
-  a3: undefined,
-  b3: undefined,
-  d3: undefined,
-  e3: undefined,
-  f3: undefined,
-  g3: undefined,
-  h3: undefined,
-  a4: undefined,
-  b4: undefined,
-  c4: undefined,
-  d4: undefined,
-  e4: undefined,
-  f4: undefined,
-  g4: undefined,
-  h4: undefined,
-  a5: undefined,
-  b5: undefined,
-  c5: undefined,
-  d5: undefined,
-  e5: undefined,
-  f5: undefined,
-  g5: undefined,
-  h5: undefined,
-  a6: undefined,
-  b6: undefined,
-  c6: undefined,
-  d6: undefined,
-  e6: undefined,
-  f6: undefined,
-  g6: undefined,
-  h6: undefined,
-  a7: "black_pawn",
-  b7: "black_pawn",
-  c7: "black_pawn",
-  d7: "black_pawn",
-  e7: "black_pawn",
-  f7: "black_pawn",
-  g7: "black_pawn",
-  h7: "black_pawn",
-  a8: "black_rook",
-  b8: "black_knight",
-  c8: "black_bishop",
-  d8: "black_queen",
-  e8: "black_king",
-  f8: "black_bishop",
-  g8: "black_knight",
-  h8: "black_rook",
+const copier = (oldDict) => {
+  let copy = {};
+  Object.assign(copy, oldDict);
+  return copy;
 };
 
-const horizontalAxis = ["a", "b", "c", "d", "e", "f", "g", "h"];
-const veritcalAxis = ["1", "2", "3", "4", "5", "6", "7", "8"];
+const initialState = {
+  pieceLoc: copier(startingMap),
+  selectedPieces: [],
+  whiteKingIndex: "e1",
+  blackKingIndex: "e8",
+  whiteMove: true,
+  lastMove: [],
+  whitePromotion: false,
+  blackPromotion: false,
+  promotionID: undefined,
+  checkmate: false,
+  checkmateText: "",
+};
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      pieceLoc: startingMap,
-      selectedPieces: [],
-      whiteKingIndex: "e1",
-      blackKingIndex: "e8",
-      whiteMove: true,
-      lastMove: [],
-      humanMove: true,
-    };
+    this.state = { ...initialState, humanMove: copier(props.startColor)};
+    this.startColor = this.props.startColor;
+    this.begin = this.props.begin;
   }
 
   possibleMoves = (start) => {
     let newLoc = this.state.pieceLoc;
-    let selectedPiece = newLoc[start];
+    let selectedPiece = newLoc[start].name;
     let moves = [];
 
     if (selectedPiece === "white_pawn") {
@@ -118,6 +79,17 @@ class Game extends React.Component {
       moves = queenMove(start, newLoc, this.state.whiteMove);
     } else {
       moves = kingMove(start, newLoc, this.state.whiteMove);
+      let posCastlingMoves = [];
+      if (
+        !newLoc[start].hasMoved &&
+        checkKingAttacked(newLoc, start, this.state.whiteMove).length === 0
+      ) {
+        posCastlingMoves = attemptCastle(
+          this.state.pieceLoc,
+          this.state.whiteMove
+        );
+      }
+      moves = moves.concat(posCastlingMoves);
     }
 
     let checked = [];
@@ -154,9 +126,14 @@ class Game extends React.Component {
   };
 
   selectedTileHandler = (e) => {
-    if (!this.state.humanMove) {
+    console.log(this.state.humanMove)
+    if (
+      !this.state.humanMove &&
+      !this.state.whitePromotion &&
+      !this.state.blackPromotion
+    ) {
       this.robotInputHandler();
-    } else {
+    } else if (!this.state.whitePromotion && !this.state.blackPromotion) {
       if (
         this.state.pieceLoc[e.target.id] === undefined &&
         this.state.selectedPieces.length === 0
@@ -165,12 +142,12 @@ class Game extends React.Component {
       } else if (this.state.selectedPieces.length === 0) {
         if (
           this.state.whiteMove &&
-          this.state.pieceLoc[e.target.id].charAt(0) === "b"
+          this.state.pieceLoc[e.target.id].color === "b"
         ) {
           console.log("choose a white piece");
         } else if (
           !this.state.whiteMove &&
-          this.state.pieceLoc[e.target.id].charAt(0) === "w"
+          this.state.pieceLoc[e.target.id].color === "w"
         ) {
           console.log("choose a black piece");
         } else {
@@ -189,25 +166,43 @@ class Game extends React.Component {
         console.log("move attempt......");
         this.humanInputHandler(this.state.selectedPieces[0], e.target.id);
       }
+    } else {
+      console.log("promo in progress");
     }
   };
 
   robotInputHandler = () => {
-    //only works for black first
+    let color = this.props.startColor ? 'b' : 'w'
     let allRoboMoves = [];
     for (const [key, val] of Object.entries(this.state.pieceLoc)) {
-      if (val !== undefined && val.charAt(0) === "b") {
+      if (val !== undefined && val.color === color) {
         let posMoves = this.possibleMoves(key);
         for (let move of posMoves) {
           allRoboMoves.push([key, move]);
         }
       }
     }
-    let randElement =
-      allRoboMoves[Math.floor(Math.random() * allRoboMoves.length)];
+    if (allRoboMoves.length === 0) {
+      this.setState((state) => {
+        return {
+          ...state,
+          checkmate: true,
+          checkmateText: beatMachineText,
+        };
+      });
+    } else {
+      let randElement =
+        allRoboMoves[Math.floor(Math.random() * allRoboMoves.length)];
 
-    console.log(allRoboMoves);
-    this.moveFinalizer(randElement[0], randElement[1]);
+      console.log(allRoboMoves);
+      this.moveFinalizer(randElement[0], randElement[1]);
+    }
+  };
+
+  //robot promotion intelligence function
+  roboPromoIntelligence = (posPromos) => {
+    console.log(posPromos.length);
+    return posPromos[Math.floor(Math.random() * posPromos.length)];
   };
 
   humanInputHandler = (start, end) => {
@@ -225,10 +220,90 @@ class Game extends React.Component {
     }
   };
 
+  whitePromotionHandler = (e) => {
+    let newLoc = this.state.pieceLoc;
+    if (e.target.id === "whiteRookPromo") {
+      newLoc[this.state.promotionID] = new ChessPiece("white_rook");
+      this.endPromo(newLoc);
+    }
+    if (e.target.id === "whiteKnightPromo") {
+      newLoc[this.state.promotionID] = new ChessPiece("white_knight");
+      this.endPromo(newLoc);
+    }
+    if (e.target.id === "whiteBishopPromo") {
+      newLoc[this.state.promotionID] = new ChessPiece("white_bishop");
+      this.endPromo(newLoc);
+    }
+    if (e.target.id === "whiteQueenPromo") {
+      newLoc[this.state.promotionID] = new ChessPiece("white_queen");
+      this.endPromo(newLoc);
+    }
+  };
+
+  blackPromotionHandler = (e) => {
+    let newLoc = this.state.pieceLoc;
+    if (e.target.id === "blackRookPromo") {
+      newLoc[this.state.promotionID] = new ChessPiece("white_rook");
+      this.endPromo(newLoc);
+    }
+    if (e.target.id === "blackKnightPromo") {
+      newLoc[this.state.promotionID] = new ChessPiece("white_knight");
+      this.endPromo(newLoc);
+    }
+    if (e.target.id === "blackBishopPromo") {
+      newLoc[this.state.promotionID] = new ChessPiece("white_bishop");
+      this.endPromo(newLoc);
+    }
+    if (e.target.id === "blackQueenPromo") {
+      newLoc[this.state.promotionID] = new ChessPiece("white_queen");
+      this.endPromo(newLoc);
+    }
+  };
+
+  endPromo = (newLoc) => {
+    this.setState((state) => {
+      return {
+        ...state,
+        pieceLoc: newLoc,
+        whitePromotion: false,
+        blackPromotion: false,
+        promotionID: undefined,
+      };
+    });
+  };
+
   moveFinalizer = (start, end) => {
     let newLoc = this.state.pieceLoc;
-    let selectedPiece = newLoc[start];
+    let selectedPiece = newLoc[start].name;
     let tempLastMoves = [start, end];
+    let kingEnd = end;
+
+    if (selectedPiece.includes("king") && !newLoc[start].has_moved) {
+      if (end === "a1" && newLoc["h8"] !== undefined) {
+        newLoc["d1"] = newLoc["a1"];
+        newLoc["a1"] = undefined;
+        newLoc["d1"].hasMoved = true;
+        kingEnd = "c1";
+      }
+      if (end === "h1" && newLoc["h8"] !== undefined) {
+        newLoc["f1"] = newLoc["h1"];
+        newLoc["h1"] = undefined;
+        newLoc["f1"].hasMoved = true;
+        kingEnd = "g1";
+      }
+      if (end === "a8" && newLoc["h8"] !== undefined) {
+        newLoc["d8"] = newLoc["a8"];
+        newLoc["a8"] = undefined;
+        newLoc["d8"].hasMoved = true;
+        kingEnd = "c8";
+      }
+      if (end === "h8" && newLoc["h8"] !== undefined) {
+        newLoc["f8"] = newLoc["h8"];
+        newLoc["h8"] = undefined;
+        newLoc["f8"].hasMoved = true;
+        kingEnd = "g8";
+      }
+    }
 
     if (
       (selectedPiece === "black_pawn" &&
@@ -247,14 +322,21 @@ class Game extends React.Component {
       }
     }
 
-    newLoc[end] = newLoc[start];
-    newLoc[start] = undefined;
+    if (kingEnd !== end) {
+      newLoc[kingEnd] = newLoc[start];
+      newLoc[start] = undefined;
+      newLoc[kingEnd].hasMoved = true;
+    } else {
+      newLoc[end] = newLoc[start];
+      newLoc[start] = undefined;
+      newLoc[end].hasMoved = true;
+    }
 
     if (selectedPiece === "white_king") {
       this.setState((state) => {
         return {
           ...state,
-          whiteKingIndex: end,
+          whiteKingIndex: kingEnd,
         };
       });
     }
@@ -262,7 +344,7 @@ class Game extends React.Component {
       this.setState((state) => {
         return {
           ...state,
-          blackKingIndex: end,
+          blackKingIndex: kingEnd,
         };
       });
     }
@@ -272,6 +354,53 @@ class Game extends React.Component {
         pieceLoc: newLoc,
         lastMove: tempLastMoves,
         selectedPieces: [],
+      };
+    });
+    if (selectedPiece.includes("pawn")) {
+      if (end.charAt(1) === "8") {
+        if (this.state.humanMove) {
+          this.setState((state) => {
+            return {
+              ...state,
+              whitePromotion: true,
+              promotionID: end,
+            };
+          });
+        } else {
+          let newLoc = this.state.pieceLoc;
+          newLoc[end] = this.roboPromoIntelligence(posWhitePromos);
+          this.setState((state) => {
+            return {
+              ...state,
+              pieceLoc: newLoc,
+            };
+          });
+        }
+      }
+      if (end.charAt(1) === "1") {
+        if (this.state.humanMove) {
+          this.setState((state) => {
+            return {
+              ...state,
+              blackPromotion: true,
+              promotionID: end,
+            };
+          });
+        } else {
+          let newLoc = this.state.pieceLoc;
+          newLoc[end] = this.roboPromoIntelligence(posBlackPromos);
+          this.setState((state) => {
+            return {
+              ...state,
+              pieceLoc: newLoc,
+            };
+          });
+        }
+      }
+    }
+    this.setState((state) => {
+      return {
+        ...state,
         whiteMove: !state.whiteMove,
         humanMove: !state.humanMove,
       };
@@ -279,34 +408,56 @@ class Game extends React.Component {
     console.log("move success");
   };
 
+  //human white move first
+  // for (let i = veritcalAxis.length - 1; i >= 0; i--) {
+  //   for (let j = 0; j < horizontalAxis.length; j++) {
+
+  //human black first
+  //for (let i = 0; i < veritcalAxis.length; i++) {
+  //for (let j = horizontalAxis.length - 1; j >= 0; j--) {
+
   buildBoard = () => {
     let board = [];
+    let BoOr = this.props.startColor;
 
-    for (let i = veritcalAxis.length - 1; i >= 0; i--) {
-      for (let j = 0; j < horizontalAxis.length; j++) {
-        let tileColor = "#261e1a"; //tile color dark
-        let textColor = "#9497a0";
+    let i = 0;
+    let j = 0;
+    for (
+      BoOr ? (i = veritcalAxis.length - 1) : (i = 0);
+      BoOr ? i >= 0 : i < veritcalAxis.length;
+      BoOr ? i-- : i++
+    ) {
+      for (
+        BoOr ? (j = 0) : (j = horizontalAxis.length - 1);
+        BoOr ? j < horizontalAxis.length : j >= 0;
+        BoOr ? j++ : j--
+      ) {
+        let tileColor = boardLightTileColor; //tile color dark
+        let textColor = boardTextColor;
         let numberText = "";
         let letterText = "";
         let isBorderBox = false;
         let iCurr = horizontalAxis[j];
         let jCurr = veritcalAxis[i];
-        let image = pieceImage[this.state.pieceLoc[iCurr + jCurr]];
+        let image = undefined;
+        if (this.state.pieceLoc[iCurr + jCurr] !== undefined) {
+          image = pieceImage[this.state.pieceLoc[iCurr + jCurr].name];
+        }
         let showPiece = image !== undefined;
 
         //change ^Above^ to make the board black or white first
 
         if ((i + j) % 2 === 0) {
-          tileColor = "#4b648a"; //tile color light
+          tileColor = boardDarkTileColor; //tile color lightboard;
           //textColor = "black";
         }
-        if (j === 0) {
+        if (BoOr ? j === 0 : j === 7) {
           numberText = jCurr;
           if (i === 0 || i === 7) {
             isBorderBox = true;
           }
         }
-        if (i === 0) {
+        if (BoOr ? i === 0 : i === 7) {
           letterText = horizontalAxis[j];
           if (j === 0 || j === 7) {
             isBorderBox = true;
@@ -333,8 +484,30 @@ class Game extends React.Component {
     return board;
   };
 
+  gameRestartHandler = () => {
+    this.setState((state) => {
+      return {
+        ...initialState,
+        pieceLoc: copier(startingMap),
+        humanMove: !state.humanMove
+      };
+    });
+  };
+
   render() {
-    return <BoardUI board={this.buildBoard()}></BoardUI>;
+    return (
+      <BoardUI
+        gameNotStarted={this.props.begin}
+        whitePromo={this.state.whitePromotion}
+        blackPromo={this.state.blackPromotion}
+        whitePromoHandler={this.whitePromotionHandler}
+        blackPromoHandler={this.blackPromotionHandler}
+        checkmate={this.state.checkmate}
+        checkmateText={this.state.checkmateText}
+        board={this.buildBoard()}
+        gameRestartHandler={this.gameRestartHandler}
+      ></BoardUI>
+    );
   }
 }
 

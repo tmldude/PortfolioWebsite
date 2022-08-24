@@ -66,16 +66,17 @@
 }
 
 .chessboard-box {
+  position: relative;
   display: block;
-  height: 60rem;
-  width: 60rem;
+  height: $chess-board-large;
+  width: $chess-board-large;
   margin: 1.5rem auto;
   border: 3.2rem solid darken($color-brown, 25%);
   border-radius: 0.5rem;
 
   @media screen and (max-width: 1100px) {
-    height: 45rem;
-    width: 45rem;
+    height: $chess-board-medium;
+    width: $chess-board-medium;
     border: 2.2rem solid darken($color-brown, 25%);
     border-radius: 0.3rem;
   }
@@ -84,8 +85,8 @@
     border: 0.6rem solid darken($color-brown, 25%);
     border-radius: 0.2rem;
 
-    height: 33rem;
-    width: 33rem;
+    height: $chess-board-small;
+    width: $chess-board-small;
   }
 }
 
@@ -114,7 +115,7 @@
     margin-left: auto;
     margin-right: auto;
     width: 75%;
-    
+
     cursor: move;
 
     @media screen and (max-width: 1100px) {
@@ -158,5 +159,86 @@
     @media screen and (max-width: 768px) {
       margin-left: 4rem;
     }
+  }
+}
+
+.promotion-overlay {
+  position: absolute;
+  display: block;
+  width: calc($chess-board-large/2);
+  height: calc($chess-board-large/8);
+  background-color: $chess-color-dark;
+  z-index: 200;
+  cursor: pointer;
+  margin-left: calc($chess-board-large/4);
+  transition: all 0.5s ease-in;
+
+  // &__white {
+
+  // }
+
+  // &__black{
+
+  // }
+
+  &__box {
+    display: inline-block;
+    width: 25%;
+    margin: 0;
+  }
+
+  @media screen and (max-width: 1100px) {
+    height: calc($chess-board-medium/8);
+    width: calc($chess-board-medium/2);
+    margin-left: calc($chess-board-medium/4);
+  }
+
+  @media screen and (max-width: 768px) {
+    height: calc($chess-board-small/8);
+    width: calc($chess-board-small/2);
+
+    margin-left: calc($chess-board-small/4);
+  }
+}
+
+.promotion-black-out {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  cursor: none;
+  transition: all 0.5s ease-in;
+}
+
+.checkmate-box {
+  width: 100%;
+  height: 30%;
+  margin-top: 9rem;
+
+  &__text {
+    color: $chess-color-light;
+    font-size: 7rem;
+    text-transform: uppercase;
+    width: 100%;
+
+    @media screen and (max-width: 1100px) {
+      font-size: 5rem;
+    }
+
+    @media screen and (max-width: 768px) {
+      font-size: 3rem;
+    }
+  }
+  &__button {
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 5rem;
+    width: 25%;
+    height: 25%;
+    border-radius: 2px;
+    display: block;
   }
 }

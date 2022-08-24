@@ -1,3 +1,11 @@
+export class ChessPiece {
+  constructor(name) {
+    this.name = name;
+    this.color = name.charAt(0);
+    this.hasMoved = false;
+  }
+}
+
 export const numToLet = {
   1: "a",
   2: "b",
@@ -32,8 +40,8 @@ export const pawnMoveWhite = (index, pieceLoc, lastMove) => {
   }
   if (yNum === 5 && lastMove !== undefined) {
     if (
-      lastMove[0].charAt(1) === '7' &&
-      lastMove[1].charAt(1) === '5' &&
+      lastMove[0].charAt(1) === "7" &&
+      lastMove[1].charAt(1) === "5" &&
       (letToNum[lastMove[1].charAt(0)] === xNum + 1 ||
         letToNum[lastMove[1].charAt(0)] === xNum - 1)
     ) {
@@ -46,14 +54,14 @@ export const pawnMoveWhite = (index, pieceLoc, lastMove) => {
   if (xLet === "a") {
     let coord = numToLet[xNum + 1] + (yNum + 1).toString();
     if (pieceLoc[coord] !== undefined) {
-      if (pieceLoc[coord].charAt(0) === "b") {
+      if (pieceLoc[coord].color === "b") {
         posMoves.push(coord);
       }
     }
   } else if (xLet === "h") {
     let coord = numToLet[xNum - 1] + (yNum + 1).toString();
     if (pieceLoc[coord] !== undefined) {
-      if (pieceLoc[coord].charAt(0) === "b") {
+      if (pieceLoc[coord].color === "b") {
         posMoves.push(coord);
       }
     }
@@ -62,12 +70,12 @@ export const pawnMoveWhite = (index, pieceLoc, lastMove) => {
     let coord2 = numToLet[xNum - 1] + (yNum + 1).toString();
 
     if (pieceLoc[coord1] !== undefined) {
-      if (pieceLoc[coord1].charAt(0) === "b") {
+      if (pieceLoc[coord1].color === "b") {
         posMoves.push(coord1);
       }
     }
     if (pieceLoc[coord2] !== undefined) {
-      if (pieceLoc[coord2].charAt(0) === "b") {
+      if (pieceLoc[coord2].color === "b") {
         posMoves.push(coord2);
       }
     }
@@ -96,8 +104,8 @@ export const pawnMoveBlack = (index, pieceLoc, lastMove) => {
   }
   if (yNum === 4 && lastMove !== undefined) {
     if (
-      lastMove[0].charAt(1) === '2' &&
-      lastMove[1].charAt(1) === '4' &&
+      lastMove[0].charAt(1) === "2" &&
+      lastMove[1].charAt(1) === "4" &&
       (letToNum[lastMove[1].charAt(0)] === xNum + 1 ||
         letToNum[lastMove[1].charAt(0)] === xNum - 1)
     ) {
@@ -110,14 +118,14 @@ export const pawnMoveBlack = (index, pieceLoc, lastMove) => {
   if (xLet === "a") {
     let coord = numToLet[xNum + 1] + (yNum - 1).toString();
     if (pieceLoc[coord] !== undefined) {
-      if (pieceLoc[coord].charAt(0) === "b") {
+      if (pieceLoc[coord].color === "w") {
         posMoves.push(coord);
       }
     }
   } else if (xLet === "h") {
     let coord = numToLet[xNum - 1] + (yNum - 1).toString();
     if (pieceLoc[coord] !== undefined) {
-      if (pieceLoc[coord].charAt(0) === "b") {
+      if (pieceLoc[coord].color === "w") {
         posMoves.push(coord);
       }
     }
@@ -126,12 +134,12 @@ export const pawnMoveBlack = (index, pieceLoc, lastMove) => {
     let coord2 = numToLet[xNum - 1] + (yNum - 1).toString();
 
     if (pieceLoc[coord1] !== undefined) {
-      if (pieceLoc[coord1].charAt(0) === "w") {
+      if (pieceLoc[coord1].color === "w") {
         posMoves.push(coord1);
       }
     }
     if (pieceLoc[coord2] !== undefined) {
-      if (pieceLoc[coord2].charAt(0) === "w") {
+      if (pieceLoc[coord2].color === "w") {
         posMoves.push(coord2);
       }
     }
@@ -160,11 +168,11 @@ export const rookMove = (index, pieceLoc, whiteMove) => {
         } else {
           notFound = false;
           if (whiteMove) {
-            if (pieceLoc[currSquare].charAt(0) === "b") {
+            if (pieceLoc[currSquare].color === "b") {
               posMoves.push(currSquare);
             }
           } else {
-            if (pieceLoc[currSquare].charAt(0) === "w") {
+            if (pieceLoc[currSquare].color === "w") {
               posMoves.push(currSquare);
             }
           }
@@ -183,11 +191,11 @@ export const rookMove = (index, pieceLoc, whiteMove) => {
         } else {
           notFound = false;
           if (whiteMove) {
-            if (pieceLoc[currSquare].charAt(0) === "b") {
+            if (pieceLoc[currSquare].color === "b") {
               posMoves.push(currSquare);
             }
           } else {
-            if (pieceLoc[currSquare].charAt(0) === "w") {
+            if (pieceLoc[currSquare].color === "w") {
               posMoves.push(currSquare);
             }
           }
@@ -206,11 +214,11 @@ export const rookMove = (index, pieceLoc, whiteMove) => {
         } else {
           notFound = false;
           if (whiteMove) {
-            if (pieceLoc[currSquare].charAt(0) === "b") {
+            if (pieceLoc[currSquare].color === "b") {
               posMoves.push(currSquare);
             }
           } else {
-            if (pieceLoc[currSquare].charAt(0) === "w") {
+            if (pieceLoc[currSquare].color === "w") {
               posMoves.push(currSquare);
             }
           }
@@ -229,11 +237,11 @@ export const rookMove = (index, pieceLoc, whiteMove) => {
         } else {
           notFound = false;
           if (whiteMove) {
-            if (pieceLoc[currSquare].charAt(0) === "b") {
+            if (pieceLoc[currSquare].color === "b") {
               posMoves.push(currSquare);
             }
           } else {
-            if (pieceLoc[currSquare].charAt(0) === "w") {
+            if (pieceLoc[currSquare].color === "w") {
               posMoves.push(currSquare);
             }
           }
@@ -261,11 +269,11 @@ export const bishopMove = (index, pieceLoc, whiteMove) => {
         } else {
           found_up_up = true;
           if (whiteMove) {
-            if (pieceLoc[move].charAt(0) === "b") {
+            if (pieceLoc[move].color === "b") {
               posMoves.push(move);
             }
           } else {
-            if (pieceLoc[move].charAt(0) === "w") {
+            if (pieceLoc[move].color === "w") {
               posMoves.push(move);
             }
           }
@@ -280,11 +288,11 @@ export const bishopMove = (index, pieceLoc, whiteMove) => {
         } else {
           found_down_up = true;
           if (whiteMove) {
-            if (pieceLoc[move].charAt(0) === "b") {
+            if (pieceLoc[move].color === "b") {
               posMoves.push(move);
             }
           } else {
-            if (pieceLoc[move].charAt(0) === "w") {
+            if (pieceLoc[move].color === "w") {
               posMoves.push(move);
             }
           }
@@ -300,11 +308,11 @@ export const bishopMove = (index, pieceLoc, whiteMove) => {
         } else {
           found_up_down = true;
           if (whiteMove) {
-            if (pieceLoc[move].charAt(0) === "b") {
+            if (pieceLoc[move].color === "b") {
               posMoves.push(move);
             }
           } else {
-            if (pieceLoc[move].charAt(0) === "w") {
+            if (pieceLoc[move].color === "w") {
               posMoves.push(move);
             }
           }
@@ -312,7 +320,7 @@ export const bishopMove = (index, pieceLoc, whiteMove) => {
       }
     }
 
-    if (xNum - i > 0 && yNum - i <= 8 && !found_down_down) {
+    if (xNum - i > 0 && yNum - i > 0 && !found_down_down) {
       let move = numToLet[xNum - i] + (yNum - i).toString();
       if (!posMoves.includes(move) && move !== index) {
         if (pieceLoc[move] === undefined) {
@@ -320,11 +328,11 @@ export const bishopMove = (index, pieceLoc, whiteMove) => {
         } else {
           found_down_down = true;
           if (whiteMove) {
-            if (pieceLoc[move].charAt(0) === "b") {
+            if (pieceLoc[move].color === "b") {
               posMoves.push(move);
             }
           } else {
-            if (pieceLoc[move].charAt(0) === "w") {
+            if (pieceLoc[move].color === "w") {
               posMoves.push(move);
             }
           }
@@ -376,11 +384,11 @@ export const knightMove = (index, pieceLoc, whiteMove) => {
   for (let move of posMoves) {
     if (pieceLoc[move] !== undefined) {
       if (whiteMove) {
-        if (pieceLoc[move].charAt(0) === "b") {
+        if (pieceLoc[move].color === "b") {
           verified.push(move);
         }
       } else {
-        if (pieceLoc[move].charAt(0) === "w") {
+        if (pieceLoc[move].color === "w") {
           verified.push(move);
         }
       }
@@ -421,11 +429,11 @@ export const kingMove = (index, pieceLoc, whiteMove) => {
         test_moves.push(move);
       } else {
         if (whiteMove) {
-          if (pieceLoc[move].charAt(0) === "b") {
+          if (pieceLoc[move].color === "b") {
             test_moves.push(move);
           }
         } else {
-          if (pieceLoc[move].charAt(0) === "w") {
+          if (pieceLoc[move].color === "w") {
             test_moves.push(move);
           }
         }
@@ -444,14 +452,17 @@ export const checkKingAttacked = (pieceLoc, indexKing, isWhite) => {
   let attackers = [];
   for (let move of knightPossibles) {
     if (pieceLoc[move] !== undefined) {
-      if (pieceLoc[move].includes("knight")) {
+      if (pieceLoc[move].name.includes("knight")) {
         attackers.push(move);
       }
     }
   }
   for (let move of rookPossibles) {
     if (pieceLoc[move] !== undefined) {
-      if (pieceLoc[move].includes("rook") || pieceLoc[move].includes("queen")) {
+      if (
+        pieceLoc[move].name.includes("rook") ||
+        pieceLoc[move].name.includes("queen")
+      ) {
         attackers.push(move);
       }
     }
@@ -459,12 +470,12 @@ export const checkKingAttacked = (pieceLoc, indexKing, isWhite) => {
   for (let move of bishopPossibles) {
     if (pieceLoc[move] !== undefined) {
       if (
-        pieceLoc[move].includes("bishop") ||
-        pieceLoc[move].includes("queen")
+        pieceLoc[move].name.includes("bishop") ||
+        pieceLoc[move].name.includes("queen")
       ) {
         attackers.push(move);
       }
-      if (pieceLoc[move].includes("pawn")) {
+      if (pieceLoc[move].name.includes("pawn")) {
         let pawnPos = null;
         if (!isWhite) {
           pawnPos = pawnMoveWhite(move, pieceLoc);
@@ -479,10 +490,50 @@ export const checkKingAttacked = (pieceLoc, indexKing, isWhite) => {
   }
   for (let move of kingPossibles) {
     if (pieceLoc[move] !== undefined) {
-      if (pieceLoc[move].includes("king")) {
+      if (pieceLoc[move].name.includes("king")) {
         attackers.push(move);
       }
     }
   }
   return attackers;
+};
+
+export const attemptCastle = (pieceLoc, whiteMove) => {
+  let posCastles = [];
+  let y = "8";
+  let testName = "black_rook";
+  if (whiteMove) {
+    y = "1";
+    testName = "white_rook";
+  }
+  if (pieceLoc["a" + y] !== undefined) {
+    if (
+      pieceLoc["a" + y].name === testName &&
+      !pieceLoc["a" + y].has_moved &&
+      pieceLoc["b" + y] === undefined &&
+      pieceLoc["c" + y] === undefined &&
+      pieceLoc["d" + y] === undefined
+    ) {
+      let C1or7Attacked = checkKingAttacked(pieceLoc, "c" + y, whiteMove);
+      let D1or7Attacked = checkKingAttacked(pieceLoc, "d" + y, whiteMove);
+      if (C1or7Attacked.length === 0 && D1or7Attacked.length === 0) {
+        posCastles.push("a" + y);
+      }
+    }
+  }
+  if (pieceLoc["h" + y] !== undefined) {
+    if (
+      pieceLoc["h" + y].name === testName &&
+      !pieceLoc["h" + y].has_moved &&
+      pieceLoc["f" + y] === undefined &&
+      pieceLoc["g" + y] === undefined
+    ) {
+      let F1or7Attacked = checkKingAttacked(pieceLoc, "f" + y, whiteMove);
+      let G1or7Attacked = checkKingAttacked(pieceLoc, "g" + y, whiteMove);
+      if (F1or7Attacked.length === 0 && G1or7Attacked.length === 0) {
+        posCastles.push("h" + y);
+      }
+    }
+  }
+  return posCastles;
 };
