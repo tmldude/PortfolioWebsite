@@ -1,12 +1,26 @@
-
 // Solid black line
 .solid-black-hr {
-    position: relative;
-    color: $color-black;
-    background-color: $color-black;
-    height: 0.5rem;
-    border-color: $color-black;
-    width: 80%;
-    margin: auto;
-   
+  position: relative;
+  color: $color-black;
+  background-color: $color-black;
+  height: 0.5rem;
+  border-color: $color-black;
+  width: 80%;
+  margin: auto;
+}
+
+.loading-thing {
+  color: $color-black;
+
+  width: 30%;
+  height: 30%;
+  margin-right: 30%;
+  position: absolute;
+  z-index: 1;
+
+  &__text {
+    font-size: 4rem;
+    text-transform: uppercase;
+    animation: spin-anim 5s linear infinite;
+  }
 }
