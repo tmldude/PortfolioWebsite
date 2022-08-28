@@ -13,6 +13,7 @@ const PieceUI = ({
   image,
   selectedOne,
   clickedSquareHandler,
+  highlight,
 }) => {
   const imageDiv = (
     <img
@@ -28,8 +29,10 @@ const PieceUI = ({
       className="chess-grid__square"
       style={{ color: textColor, backgroundColor: color }}
     >
+      {highlight && (
+        <div className="promotion-black-out"></div>
+      )}
       <div className="piece-image" id={id} onClick={clickedSquareHandler}>
-        {/* {showPiece && <Draggable>{imageDiv}</Draggable>} */}
         {showPiece && imageDiv}
       </div>
       <span className="number-text">{numberText}</span>

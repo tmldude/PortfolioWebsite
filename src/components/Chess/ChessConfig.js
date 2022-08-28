@@ -122,4 +122,8 @@ export const blackWinsText = "Black Wins!"
 export const boardDarkTileColor = "#261e1a";
 export const boardTextColor = "#9497a0";
 export const boardLightTileColor = "#4b648a";
+export const highlightColor = "#aa8572";
+export const lastMoveHighlight = 'rgba(0, 0, 0, 0.5)'
+export const inCheckColor = 'rgba(0, 177, 260, 0.7)'
+
 

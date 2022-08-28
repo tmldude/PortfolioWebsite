@@ -16,6 +16,9 @@ import {
   boardDarkTileColor,
   boardTextColor,
   boardLightTileColor,
+  highlightColor,
+  //lastMoveHighlight,
+  //inCheckColor,
 } from "../ChessConfig";
 import BoardUI from "../UI/BoardUI";
 import {
@@ -51,6 +54,9 @@ const initialState = {
   promotionID: undefined,
   checkmate: false,
   checkmateText: "",
+  chosenHighlight: undefined,
+  whiteKingCheck: false,
+  blackKingCheck: false,
 };
 
 class Game extends React.Component {
@@ -128,7 +134,7 @@ class Game extends React.Component {
     return checked;
   };
 
-  getAllPossibleMoves = color => {
+  getAllPossibleMoves = (color) => {
     let allPosMoves = [];
     for (const [key, val] of Object.entries(this.state.pieceLoc)) {
       if (val !== undefined && val.color === color) {
@@ -141,21 +147,23 @@ class Game extends React.Component {
     return allPosMoves;
   };
 
-  checkIfCheckmateOrStalemate = allPosMoves => {
+  checkIfCheckmateOrStalemate = (allPosMoves) => {
     if (allPosMoves.length === 0) {
-      let checks = []
+      let checks = [];
       if (this.state.whiteMove) {
         checks = checkKingAttacked(
           this.state.pieceLoc,
           this.state.whiteKingIndex,
           this.state.whiteMove
         );
-        if (checks.length !== 0){
+        if (checks.length !== 0) {
           this.setState((state) => {
             return {
               ...state,
               checkmate: true,
-              checkmateText: !this.humanMove ? beatMachineText : machineWinsText,
+              checkmateText: !this.humanMove
+                ? beatMachineText
+                : machineWinsText,
             };
           });
         }
@@ -165,12 +173,14 @@ class Game extends React.Component {
           this.state.blackKingIndex,
           this.state.whiteMove
         );
-        if (checks.length !== 0){
+        if (checks.length !== 0) {
           this.setState((state) => {
             return {
               ...state,
               checkmate: true,
-              checkmateText: !this.humanMove ? beatMachineText: machineWinsText,
+              checkmateText: !this.humanMove
+                ? beatMachineText
+                : machineWinsText,
             };
           });
         }
@@ -185,9 +195,8 @@ class Game extends React.Component {
           };
         });
       }
-
     }
-  }
+  };
 
   selectedTileHandler = (e) => {
     if (
@@ -202,9 +211,10 @@ class Game extends React.Component {
       }
     }
 
-
-    let allPosHumanMoves = this.getAllPossibleMoves(this.props.startColor ? 'w' : 'b')
-    this.checkIfCheckmateOrStalemate(allPosHumanMoves)
+    let allPosHumanMoves = this.getAllPossibleMoves(
+      this.props.startColor ? "w" : "b"
+    );
+    this.checkIfCheckmateOrStalemate(allPosHumanMoves);
 
     if (!this.state.whitePromotion && !this.state.blackPromotion) {
       if (
@@ -225,7 +235,11 @@ class Game extends React.Component {
           console.log("choose a black piece");
         } else {
           this.setState((state) => {
-            return { ...state, selectedPieces: [e.target.id] };
+            return {
+              ...state,
+              selectedPieces: [e.target.id],
+              chosenHighlight: e.target.id,
+            };
           });
         }
       } else if (
@@ -245,10 +259,10 @@ class Game extends React.Component {
   };
 
   robotInputHandler = (color) => {
-    let allRoboMoves = this.getAllPossibleMoves(color)
-    
+    let allRoboMoves = this.getAllPossibleMoves(color);
+
     if (allRoboMoves.length === 0) {
-      this.checkIfCheckmateOrStalemate(allRoboMoves)
+      this.checkIfCheckmateOrStalemate(allRoboMoves);
     } else {
       let randElement =
         allRoboMoves[Math.floor(Math.random() * allRoboMoves.length)];
@@ -272,6 +286,7 @@ class Game extends React.Component {
         return {
           ...state,
           selectedPieces: [],
+          chosenHighlight: undefined,
         };
       });
     }
@@ -325,6 +340,7 @@ class Game extends React.Component {
         whitePromotion: false,
         blackPromotion: false,
         promotionID: undefined,
+        chosenHighlight: undefined,
       };
     });
   };
@@ -413,6 +429,7 @@ class Game extends React.Component {
         pieceLoc: newLoc,
         lastMove: tempLastMoves,
         selectedPieces: [],
+        chosenHighlight: undefined,
       };
     });
     if (selectedPiece.includes("pawn")) {
@@ -510,6 +527,10 @@ class Game extends React.Component {
           image = pieceImage[this.state.pieceLoc[iCurr + jCurr].name];
         }
         let showPiece = image !== undefined;
+        let highlight =
+          this.state.lastMove.length === 2 &&
+          (this.state.lastMove[0] === iCurr + jCurr ||
+            this.state.lastMove[1] === iCurr + jCurr);
 
         //change ^Above^ to make the board black or white first
 
@@ -529,6 +550,9 @@ class Game extends React.Component {
             isBorderBox = true;
           }
         }
+        if (this.state.chosenHighlight === iCurr + jCurr) {
+          tileColor = highlightColor;
+        }
 
         board.push(
           <PieceUI
@@ -543,6 +567,7 @@ class Game extends React.Component {
             isBorderBox={isBorderBox}
             image={image}
             clickedSquareHandler={this.selectedTileHandler}
+            highlight={highlight}
           />
         );
       }
