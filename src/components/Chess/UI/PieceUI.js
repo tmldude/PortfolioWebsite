@@ -29,9 +29,9 @@ const PieceUI = ({
       className="chess-grid__square"
       style={{ color: textColor, backgroundColor: color }}
     >
-      {highlight && (
+      {/* {highlight && (
         <div id={id} onClick={clickedSquareHandler} className="promotion-black-out" style={{cursor: 'pointer'}}></div>
-      )}
+      )} */}
       <div className="piece-image" id={id} onClick={clickedSquareHandler}>
         {showPiece && imageDiv}
       </div>

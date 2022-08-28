@@ -17,7 +17,7 @@ import {
   boardTextColor,
   boardLightTileColor,
   highlightColor,
-  //lastMoveHighlight,
+  lastMoveHighlight,
   //inCheckColor,
 } from "../ChessConfig";
 import BoardUI from "../UI/BoardUI";
@@ -103,8 +103,7 @@ class Game extends React.Component {
 
     let checked = [];
     for (let move of moves) {
-      let copy = {};
-      Object.assign(copy, this.state.pieceLoc);
+      let copy = copier(this.state.pieceLoc);
       let temp = copy[start];
       copy[move] = temp;
       copy[start] = undefined;
@@ -271,6 +270,33 @@ class Game extends React.Component {
     }
   };
 
+  findAllMovesThatWillMakeACheck = allPosMoves => {
+    let allCheckMoves = []
+
+    for (let move of allPosMoves) {
+      let copy = copier(this.state.pieceLoc);
+      copy[move[1]] = copy[move[0]]
+      copy[move[0]] = undefined
+
+      let checks = []
+      if (this.state.whiteMove) {
+        checks = checkKingAttacked(copy, this.state.whiteKingIndex, this.state.whiteMove)
+
+      } else {
+        checks = checkKingAttacked(copy, this.state.blackKingIndex, this.state.whiteMove)
+      }
+      if (checks.length !== 0) {
+        allCheckMoves.push(move)
+      }
+    }
+    return allCheckMoves
+
+  }
+
+  findAllPiecesThatAreAttacked = () => {
+    
+  }
+  
   //robot promotion intelligence function
   roboPromoIntelligence = (posPromos) => {
     return posPromos[Math.floor(Math.random() * posPromos.length)];
@@ -553,6 +579,11 @@ class Game extends React.Component {
         if (this.state.chosenHighlight === iCurr + jCurr) {
           tileColor = highlightColor;
         }
+        if (this.state.lastMove.length === 2 &&
+          (this.state.lastMove[0] === iCurr + jCurr ||
+            this.state.lastMove[1] === iCurr + jCurr)) {
+              tileColor = lastMoveHighlight
+            }
 
         board.push(
           <PieceUI
