@@ -113,6 +113,9 @@ export const veritcalAxis = ["1", "2", "3", "4", "5", "6", "7", "8"];
 export const beatMachineText = "You beat the machine!"
 export const machineWinsText = "The Machine got you this time..."
 
+export const stalemateText = "Stalemate!"
+
+
 export const whiteWinsText = "White Wins!"
 export const blackWinsText = "Black Wins!"
 

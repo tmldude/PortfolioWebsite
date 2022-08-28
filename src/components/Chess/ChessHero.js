@@ -8,11 +8,14 @@ const ChessHero = () => {
   const [begin, setBegin] = useState(false);
 
   const changeStartingColor = () => {
-    setWhiteOrBlack((bool) => {return(!bool)});
+    if (!begin) {
+      setWhiteOrBlack((bool) => {
+        return !bool;
+      });
+    }
   };
 
   const startGameHandler = () => {
-
     setBegin(true);
     // if (whiteOrBlack === undefined) {
     //   setWhiteOrBlack(true)
@@ -24,11 +27,16 @@ const ChessHero = () => {
     <section className="section-chess">
       <div className="chess-main-box">
         <h1>Chess Engine</h1>
-        <p>
-          To play, click on the piece and then the square you want to move it
-          to. Then click again and wait for the bot to play.
+        <p style={{ margin: 0 }}>
+          To Move Pieces: Click on the piece and then the location.
+        </p>
+        <p style={{ margin: 0 }}>
+          {" "}
+          To Move the bot: click anywhere on the board
+        </p>
+        <p style={{ margin: 0 }}>
           <span style={{ marginLeft: 15 }}>
-            Features Unimplemented: Lose conditions, black player start, smarter bot
+            Features Unimplemented: Smarter Bot
           </span>
         </p>
         <span style={{ marginRight: 55 }}>
@@ -40,17 +48,21 @@ const ChessHero = () => {
             whiteOrBlack ? "chess-button__white" : "chess-button__black"
           }`}
         >
-          {whiteOrBlack ? "white" : "black"}
+          <span> {whiteOrBlack ? "White" : "Black"}</span>
         </button>
         <button
           onClick={startGameHandler}
           className="chess-button chess-button__begin"
         >
-          begin
+          Begin
         </button>
       </div>
       <div className="chessboard-box">
-        <Game startColor={whiteOrBlack} begin={begin} />
+        <Game
+          startColor={whiteOrBlack}
+          begin={begin}
+          humanMove={whiteOrBlack}
+        />
       </div>
     </section>
   );

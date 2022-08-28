@@ -9,9 +9,10 @@ import {
   horizontalAxis,
   veritcalAxis,
   beatMachineText,
-  // machineWinsText,
+  machineWinsText,
   // whiteWinsText,
   // blackWinsText,
+  stalemateText,
   boardDarkTileColor,
   boardTextColor,
   boardLightTileColor,
@@ -55,9 +56,11 @@ const initialState = {
 class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { ...initialState, humanMove: copier(props.startColor)};
+    this.state = { ...initialState };
     this.startColor = this.props.startColor;
     this.begin = this.props.begin;
+    this.onBegin = true;
+    this.humanMove = this.props.startColor;
   }
 
   possibleMoves = (start) => {
@@ -125,15 +128,85 @@ class Game extends React.Component {
     return checked;
   };
 
+  getAllPossibleMoves = color => {
+    let allPosMoves = [];
+    for (const [key, val] of Object.entries(this.state.pieceLoc)) {
+      if (val !== undefined && val.color === color) {
+        let posMoves = this.possibleMoves(key);
+        for (let move of posMoves) {
+          allPosMoves.push([key, move]);
+        }
+      }
+    }
+    return allPosMoves;
+  };
+
+  checkIfCheckmateOrStalemate = allPosMoves => {
+    if (allPosMoves.length === 0) {
+      let checks = []
+      if (this.state.whiteMove) {
+        checks = checkKingAttacked(
+          this.state.pieceLoc,
+          this.state.whiteKingIndex,
+          this.state.whiteMove
+        );
+        if (checks.length !== 0){
+          this.setState((state) => {
+            return {
+              ...state,
+              checkmate: true,
+              checkmateText: !this.humanMove ? beatMachineText : machineWinsText,
+            };
+          });
+        }
+      } else {
+        checks = checkKingAttacked(
+          this.state.pieceLoc,
+          this.state.blackKingIndex,
+          this.state.whiteMove
+        );
+        if (checks.length !== 0){
+          this.setState((state) => {
+            return {
+              ...state,
+              checkmate: true,
+              checkmateText: !this.humanMove ? beatMachineText: machineWinsText,
+            };
+          });
+        }
+      }
+
+      if (checks.length === 0) {
+        this.setState((state) => {
+          return {
+            ...state,
+            checkmate: true,
+            checkmateText: stalemateText,
+          };
+        });
+      }
+
+    }
+  }
+
   selectedTileHandler = (e) => {
-    console.log(this.state.humanMove)
     if (
-      !this.state.humanMove &&
+      (this.onBegin ? !this.props.startColor : !this.humanMove) &&
       !this.state.whitePromotion &&
       !this.state.blackPromotion
     ) {
-      this.robotInputHandler();
-    } else if (!this.state.whitePromotion && !this.state.blackPromotion) {
+      if (this.props.startColor) {
+        this.robotInputHandler("b");
+      } else {
+        this.robotInputHandler("w");
+      }
+    }
+
+
+    let allPosHumanMoves = this.getAllPossibleMoves(this.props.startColor ? 'w' : 'b')
+    this.checkIfCheckmateOrStalemate(allPosHumanMoves)
+
+    if (!this.state.whitePromotion && !this.state.blackPromotion) {
       if (
         this.state.pieceLoc[e.target.id] === undefined &&
         this.state.selectedPieces.length === 0
@@ -171,37 +244,21 @@ class Game extends React.Component {
     }
   };
 
-  robotInputHandler = () => {
-    let color = this.props.startColor ? 'b' : 'w'
-    let allRoboMoves = [];
-    for (const [key, val] of Object.entries(this.state.pieceLoc)) {
-      if (val !== undefined && val.color === color) {
-        let posMoves = this.possibleMoves(key);
-        for (let move of posMoves) {
-          allRoboMoves.push([key, move]);
-        }
-      }
-    }
+  robotInputHandler = (color) => {
+    let allRoboMoves = this.getAllPossibleMoves(color)
+    
     if (allRoboMoves.length === 0) {
-      this.setState((state) => {
-        return {
-          ...state,
-          checkmate: true,
-          checkmateText: beatMachineText,
-        };
-      });
+      this.checkIfCheckmateOrStalemate(allRoboMoves)
     } else {
       let randElement =
         allRoboMoves[Math.floor(Math.random() * allRoboMoves.length)];
 
-      console.log(allRoboMoves);
       this.moveFinalizer(randElement[0], randElement[1]);
     }
   };
 
   //robot promotion intelligence function
   roboPromoIntelligence = (posPromos) => {
-    console.log(posPromos.length);
     return posPromos[Math.floor(Math.random() * posPromos.length)];
   };
 
@@ -243,19 +300,19 @@ class Game extends React.Component {
   blackPromotionHandler = (e) => {
     let newLoc = this.state.pieceLoc;
     if (e.target.id === "blackRookPromo") {
-      newLoc[this.state.promotionID] = new ChessPiece("white_rook");
+      newLoc[this.state.promotionID] = new ChessPiece("black_rook");
       this.endPromo(newLoc);
     }
     if (e.target.id === "blackKnightPromo") {
-      newLoc[this.state.promotionID] = new ChessPiece("white_knight");
+      newLoc[this.state.promotionID] = new ChessPiece("black_knight");
       this.endPromo(newLoc);
     }
     if (e.target.id === "blackBishopPromo") {
-      newLoc[this.state.promotionID] = new ChessPiece("white_bishop");
+      newLoc[this.state.promotionID] = new ChessPiece("black_bishop");
       this.endPromo(newLoc);
     }
     if (e.target.id === "blackQueenPromo") {
-      newLoc[this.state.promotionID] = new ChessPiece("white_queen");
+      newLoc[this.state.promotionID] = new ChessPiece("black_queen");
       this.endPromo(newLoc);
     }
   };
@@ -279,19 +336,19 @@ class Game extends React.Component {
     let kingEnd = end;
 
     if (selectedPiece.includes("king") && !newLoc[start].has_moved) {
-      if (end === "a1" && newLoc["h8"] !== undefined) {
+      if (end === "a1" && newLoc["a1"] !== undefined) {
         newLoc["d1"] = newLoc["a1"];
         newLoc["a1"] = undefined;
         newLoc["d1"].hasMoved = true;
         kingEnd = "c1";
       }
-      if (end === "h1" && newLoc["h8"] !== undefined) {
+      if (end === "h1" && newLoc["h1"] !== undefined) {
         newLoc["f1"] = newLoc["h1"];
         newLoc["h1"] = undefined;
         newLoc["f1"].hasMoved = true;
         kingEnd = "g1";
       }
-      if (end === "a8" && newLoc["h8"] !== undefined) {
+      if (end === "a8" && newLoc["a8"] !== undefined) {
         newLoc["d8"] = newLoc["a8"];
         newLoc["a8"] = undefined;
         newLoc["d8"].hasMoved = true;
@@ -305,20 +362,22 @@ class Game extends React.Component {
       }
     }
 
-    if (
-      (selectedPiece === "black_pawn" &&
-        newLoc[this.state.lastMove[1]] === "white_pawn") ||
-      (selectedPiece === "white_pawn" &&
-        newLoc[this.state.lastMove[1]] === "black_pawn")
-    ) {
+    if (this.state.lastMove.length !== 0) {
       if (
-        newLoc[end] === undefined &&
-        (tempLastMoves[1].charAt(0) ===
-          numToLet[letToNum[tempLastMoves[0].charAt(0)] + 1] ||
-          tempLastMoves[1].charAt(0) ===
-            numToLet[letToNum[tempLastMoves[0].charAt(0)] - 1])
+        (selectedPiece === "black_pawn" &&
+          newLoc[this.state.lastMove[1]].name === "white_pawn") ||
+        (selectedPiece === "white_pawn" &&
+          newLoc[this.state.lastMove[1]].name === "black_pawn")
       ) {
-        newLoc[this.state.lastMove[1]] = undefined;
+        if (
+          newLoc[end] === undefined &&
+          (tempLastMoves[1].charAt(0) ===
+            numToLet[letToNum[tempLastMoves[0].charAt(0)] + 1] ||
+            tempLastMoves[1].charAt(0) ===
+              numToLet[letToNum[tempLastMoves[0].charAt(0)] - 1])
+        ) {
+          newLoc[this.state.lastMove[1]] = undefined;
+        }
       }
     }
 
@@ -358,7 +417,7 @@ class Game extends React.Component {
     });
     if (selectedPiece.includes("pawn")) {
       if (end.charAt(1) === "8") {
-        if (this.state.humanMove) {
+        if (this.humanMove) {
           this.setState((state) => {
             return {
               ...state,
@@ -378,7 +437,7 @@ class Game extends React.Component {
         }
       }
       if (end.charAt(1) === "1") {
-        if (this.state.humanMove) {
+        if (this.humanMove) {
           this.setState((state) => {
             return {
               ...state,
@@ -398,14 +457,19 @@ class Game extends React.Component {
         }
       }
     }
+
     this.setState((state) => {
       return {
         ...state,
         whiteMove: !state.whiteMove,
-        humanMove: !state.humanMove,
       };
     });
-    console.log("move success");
+    if (!this.props.startColor && this.onBegin) {
+      this.humanMove = true;
+    } else {
+      this.humanMove = !this.humanMove;
+    }
+    this.onBegin = false;
   };
 
   //human white move first
@@ -419,6 +483,8 @@ class Game extends React.Component {
   buildBoard = () => {
     let board = [];
     let BoOr = this.props.startColor;
+
+    this.roboIsWhite = BoOr;
 
     let i = 0;
     let j = 0;
@@ -489,9 +555,10 @@ class Game extends React.Component {
       return {
         ...initialState,
         pieceLoc: copier(startingMap),
-        humanMove: !state.humanMove
       };
     });
+    this.onBegin = true;
+    this.humanMove = this.props.startColor;
   };
 
   render() {
