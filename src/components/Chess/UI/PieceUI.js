@@ -30,7 +30,7 @@ const PieceUI = ({
       style={{ color: textColor, backgroundColor: color }}
     >
       {highlight && (
-        <div className="promotion-black-out"></div>
+        <div id={id} onClick={clickedSquareHandler} className="promotion-black-out" style={{cursor: 'pointer'}}></div>
       )}
       <div className="piece-image" id={id} onClick={clickedSquareHandler}>
         {showPiece && imageDiv}
