@@ -246,7 +246,7 @@ class Game extends React.Component {
         this.state.selectedPieces[0] === e.target.id
       ) {
         this.setState((state) => {
-          return { ...state, selectedPieces: [] };
+          return { ...state, selectedPieces: [], chosenHighlight: undefined, };
         });
       } else {
         console.log("move attempt......");
