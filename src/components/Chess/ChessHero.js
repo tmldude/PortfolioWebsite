@@ -48,7 +48,7 @@ const ChessHero = () => {
             whiteOrBlack ? "chess-button__white" : "chess-button__black"
           }`}
         >
-          <span> {whiteOrBlack ? "White" : "Black"}</span>
+          <span style={{ color: begin && 'transparent'}}> {whiteOrBlack ? "White" : "Black"}</span>
         </button>
         <button
           onClick={startGameHandler}

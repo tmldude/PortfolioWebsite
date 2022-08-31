@@ -19,6 +19,7 @@ import {
   highlightColor,
   lastMoveHighlight,
   //inCheckColor,
+  copier,
 } from "../ChessConfig";
 import BoardUI from "../UI/BoardUI";
 import {
@@ -32,15 +33,13 @@ import {
   pawnMoveWhite,
   queenMove,
   rookMove,
-  checkKingAttacked,
+  findAllAttackers,
   attemptCastle,
 } from "./Piece";
-
-const copier = (oldDict) => {
-  let copy = {};
-  Object.assign(copy, oldDict);
-  return copy;
-};
+import {
+  //findAllMovesThatWillMakeACheck,
+  calculateBoardValue,
+} from "./Bot";
 
 const initialState = {
   pieceLoc: copier(startingMap),
@@ -91,7 +90,7 @@ class Game extends React.Component {
       let posCastlingMoves = [];
       if (
         !newLoc[start].hasMoved &&
-        checkKingAttacked(newLoc, start, this.state.whiteMove).length === 0
+        findAllAttackers(newLoc, start, this.state.whiteMove).length === 0
       ) {
         posCastlingMoves = attemptCastle(
           this.state.pieceLoc,
@@ -109,21 +108,15 @@ class Game extends React.Component {
       copy[start] = undefined;
       let checks = [];
       if (selectedPiece.includes("king")) {
-        checks = checkKingAttacked(copy, move, this.state.whiteMove);
+        checks = findAllAttackers(copy, move, this.state.whiteMove);
       } else {
-        if (this.state.whiteMove) {
-          checks = checkKingAttacked(
-            copy,
-            this.state.whiteKingIndex,
-            this.state.whiteMove
-          );
-        } else {
-          checks = checkKingAttacked(
-            copy,
-            this.state.blackKingIndex,
-            this.state.whiteMove
-          );
-        }
+        checks = findAllAttackers(
+          copy,
+          this.state.whiteMove
+            ? this.state.whiteKingIndex
+            : this.state.blackKingIndex,
+          this.state.whiteMove
+        );
       }
       if (checks.length === 0) {
         checked.push(move);
@@ -149,43 +142,23 @@ class Game extends React.Component {
   checkIfCheckmateOrStalemate = (allPosMoves) => {
     if (allPosMoves.length === 0) {
       let checks = [];
-      if (this.state.whiteMove) {
-        checks = checkKingAttacked(
-          this.state.pieceLoc,
-          this.state.whiteKingIndex,
-          this.state.whiteMove
-        );
-        if (checks.length !== 0) {
-          this.setState((state) => {
-            return {
-              ...state,
-              checkmate: true,
-              checkmateText: !this.humanMove
-                ? beatMachineText
-                : machineWinsText,
-            };
-          });
-        }
-      } else {
-        checks = checkKingAttacked(
-          this.state.pieceLoc,
-          this.state.blackKingIndex,
-          this.state.whiteMove
-        );
-        if (checks.length !== 0) {
-          this.setState((state) => {
-            return {
-              ...state,
-              checkmate: true,
-              checkmateText: !this.humanMove
-                ? beatMachineText
-                : machineWinsText,
-            };
-          });
-        }
-      }
 
-      if (checks.length === 0) {
+      checks = findAllAttackers(
+        this.state.pieceLoc,
+        this.state.whiteMove
+          ? this.state.whiteKingIndex
+          : this.state.blackKingIndex,
+        this.state.whiteMove
+      );
+      if (checks.length !== 0) {
+        this.setState((state) => {
+          return {
+            ...state,
+            checkmate: true,
+            checkmateText: !this.humanMove ? beatMachineText : machineWinsText,
+          };
+        });
+      } else {
         this.setState((state) => {
           return {
             ...state,
@@ -233,6 +206,11 @@ class Game extends React.Component {
         ) {
           console.log("choose a black piece");
         } else {
+          console.log("-----------------------------")
+          //console.log(this.minimax(this.state.pieceLoc, 2, this.state.whiteMove))
+          console.log(this.state.pieceLoc[e.target.id].name)
+          console.log(this.state.pieceLoc[e.target.id].hasMoved)
+          console.log("-----------------------------")
           this.setState((state) => {
             return {
               ...state,
@@ -246,7 +224,7 @@ class Game extends React.Component {
         this.state.selectedPieces[0] === e.target.id
       ) {
         this.setState((state) => {
-          return { ...state, selectedPieces: [], chosenHighlight: undefined, };
+          return { ...state, selectedPieces: [], chosenHighlight: undefined };
         });
       } else {
         console.log("move attempt......");
@@ -254,6 +232,36 @@ class Game extends React.Component {
       }
     } else {
       console.log("promo in progress");
+    }
+  };
+
+  minimax = (pieceLoc, depth, isWhite) => {
+    if (depth === 0 || pieceLoc === undefined) {
+      return calculateBoardValue(pieceLoc); //the value of the current pieceLoc
+    } else if (isWhite) {
+      let value = -Number.MAX_VALUE;
+      let allPosMoves = this.getAllPossibleMoves('w');
+
+      for (let move of allPosMoves) {
+        let copy = copier(pieceLoc);
+        copy[move[1]] = copy[move[0]];
+        copy[move[0]] = undefined;
+
+        value = Math.max(value, this.minimax(copy, depth - 1, false));
+      }
+      return value;
+    } else {
+      let value = Number.MAX_VALUE;
+      let allPosMoves = this.getAllPossibleMoves('b');
+
+      for (let move of allPosMoves) {
+        let copy = copier(pieceLoc);
+        copy[move[1]] = copy[move[0]];
+        copy[move[0]] = undefined;
+
+        value = Math.min(value, this.minimax(copy, depth - 1, true));
+      }
+      return value;
     }
   };
 
@@ -270,33 +278,6 @@ class Game extends React.Component {
     }
   };
 
-  findAllMovesThatWillMakeACheck = allPosMoves => {
-    let allCheckMoves = []
-
-    for (let move of allPosMoves) {
-      let copy = copier(this.state.pieceLoc);
-      copy[move[1]] = copy[move[0]]
-      copy[move[0]] = undefined
-
-      let checks = []
-      if (this.state.whiteMove) {
-        checks = checkKingAttacked(copy, this.state.whiteKingIndex, this.state.whiteMove)
-
-      } else {
-        checks = checkKingAttacked(copy, this.state.blackKingIndex, this.state.whiteMove)
-      }
-      if (checks.length !== 0) {
-        allCheckMoves.push(move)
-      }
-    }
-    return allCheckMoves
-
-  }
-
-  findAllPiecesThatAreAttacked = () => {
-    
-  }
-  
   //robot promotion intelligence function
   roboPromoIntelligence = (posPromos) => {
     return posPromos[Math.floor(Math.random() * posPromos.length)];
@@ -377,7 +358,7 @@ class Game extends React.Component {
     let tempLastMoves = [start, end];
     let kingEnd = end;
 
-    if (selectedPiece.includes("king") && !newLoc[start].has_moved) {
+    if (selectedPiece.includes("king")) {
       if (end === "a1" && newLoc["a1"] !== undefined) {
         newLoc["d1"] = newLoc["a1"];
         newLoc["a1"] = undefined;
@@ -406,10 +387,11 @@ class Game extends React.Component {
 
     if (this.state.lastMove.length !== 0) {
       if (
-        (selectedPiece === "black_pawn" &&
+        newLoc[this.state.lastMove[1]] !== undefined &&
+        ((selectedPiece === "black_pawn" &&
           newLoc[this.state.lastMove[1]].name === "white_pawn") ||
-        (selectedPiece === "white_pawn" &&
-          newLoc[this.state.lastMove[1]].name === "black_pawn")
+          (selectedPiece === "white_pawn" &&
+            newLoc[this.state.lastMove[1]].name === "black_pawn"))
       ) {
         if (
           newLoc[end] === undefined &&
@@ -579,11 +561,13 @@ class Game extends React.Component {
         if (this.state.chosenHighlight === iCurr + jCurr) {
           tileColor = highlightColor;
         }
-        if (this.state.lastMove.length === 2 &&
+        if (
+          this.state.lastMove.length === 2 &&
           (this.state.lastMove[0] === iCurr + jCurr ||
-            this.state.lastMove[1] === iCurr + jCurr)) {
-              tileColor = lastMoveHighlight
-            }
+            this.state.lastMove[1] === iCurr + jCurr)
+        ) {
+          tileColor = lastMoveHighlight;
+        }
 
         board.push(
           <PieceUI

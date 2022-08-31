@@ -12,6 +12,12 @@ import blackQueen from "../../images/piece_images/black_queen.png";
 import blackKing from "../../images/piece_images/black_king.png";
 import { ChessPiece } from "./Logic/Piece";
 
+export const copier = (oldDict) => {
+  let copy = {};
+  Object.assign(copy, oldDict);
+  return copy;
+};
+
 export const pieceImage = {
   white_pawn: whitePawn,
   white_knight: whiteKnight,
@@ -119,11 +125,11 @@ export const stalemateText = "Stalemate!"
 export const whiteWinsText = "White Wins!"
 export const blackWinsText = "Black Wins!"
 
-export const boardDarkTileColor = "#261e1a";
+export const boardDarkTileColor = "#d0dff4" //;#261e1a
 export const boardTextColor = "#9497a0";
 export const boardLightTileColor = "#4b648a";
 export const highlightColor = "#aa8572";
-export const lastMoveHighlight = 'rgba(0, 0, 0, 0.5)'
+export const lastMoveHighlight = "#aeaeae";
 export const inCheckColor = 'rgba(0, 177, 260, 0.7)'
 
 

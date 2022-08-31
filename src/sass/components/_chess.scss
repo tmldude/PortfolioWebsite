@@ -4,7 +4,7 @@
   //flex-wrap: nowrap;
   //justify-content: space-between;
   //margin: 1rem;
-  background-color: $chess-color;
+  background-color: $chess-piece-dark;
   margin: 1rem;
   padding: 3rem 3rem;
   width: device-width;
@@ -150,6 +150,10 @@
   &__black {
     background-color: $color-black;
     color: $color-white;
+  }
+
+  &__transparent {
+    color: transparent;
   }
 
   &__begin {

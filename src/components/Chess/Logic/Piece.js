@@ -443,7 +443,7 @@ export const kingMove = (index, pieceLoc, whiteMove) => {
   return test_moves;
 };
 
-export const checkKingAttacked = (pieceLoc, indexKing, isWhite) => {
+export const findAllAttackers = (pieceLoc, indexKing, isWhite) => {
   let knightPossibles = knightMove(indexKing, pieceLoc, isWhite);
   let rookPossibles = rookMove(indexKing, pieceLoc, isWhite);
   let bishopPossibles = bishopMove(indexKing, pieceLoc, isWhite);
@@ -514,8 +514,8 @@ export const attemptCastle = (pieceLoc, whiteMove) => {
       pieceLoc["c" + y] === undefined &&
       pieceLoc["d" + y] === undefined
     ) {
-      let C1or7Attacked = checkKingAttacked(pieceLoc, "c" + y, whiteMove);
-      let D1or7Attacked = checkKingAttacked(pieceLoc, "d" + y, whiteMove);
+      let C1or7Attacked = findAllAttackers(pieceLoc, "c" + y, whiteMove);
+      let D1or7Attacked = findAllAttackers(pieceLoc, "d" + y, whiteMove);
       if (C1or7Attacked.length === 0 && D1or7Attacked.length === 0) {
         posCastles.push("a" + y);
       }
@@ -528,8 +528,8 @@ export const attemptCastle = (pieceLoc, whiteMove) => {
       pieceLoc["f" + y] === undefined &&
       pieceLoc["g" + y] === undefined
     ) {
-      let F1or7Attacked = checkKingAttacked(pieceLoc, "f" + y, whiteMove);
-      let G1or7Attacked = checkKingAttacked(pieceLoc, "g" + y, whiteMove);
+      let F1or7Attacked = findAllAttackers(pieceLoc, "f" + y, whiteMove);
+      let G1or7Attacked = findAllAttackers(pieceLoc, "g" + y, whiteMove);
       if (F1or7Attacked.length === 0 && G1or7Attacked.length === 0) {
         posCastles.push("h" + y);
       }
