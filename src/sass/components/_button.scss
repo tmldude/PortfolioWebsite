@@ -29,3 +29,16 @@
 .header-button {
     color: $color-autumn-orange;
 }
+
+.btn-card{
+  color: black;
+  font-size: 3rem;
+  text-decoration: none;
+
+  border-radius: 5px;
+  border: 1px solid #000;
+  padding: 10px 20px;
+  background: lightcoral;
+  font-size: 2em;
+  cursor: pointer;
+}

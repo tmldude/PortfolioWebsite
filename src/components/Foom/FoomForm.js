@@ -1,13 +1,19 @@
 import React, { Component } from "react";
 import "../../sass/main.scss";
 import axios from "axios";
+import FoomContext from "./FoomConext";
+
 
 class FoomForm extends Component {
-  state = {
-    search: "",
-    searchID: "",
-  };
-  
+  static contextType = FoomContext
+  constructor(props) {
+    super(props);
+    this.state = {
+      search: "",
+      searchID: "",
+    };
+  }
+
   handleInput = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
@@ -15,6 +21,15 @@ class FoomForm extends Component {
   };
 
   handleSubmit = (e) => {
+    e.preventDefault()
+    const ctx = this.context
+    //ctx.setLoadingTrue()
+    // console.log("foom form")
+    // console.log(ctx.isLoading)
+    if (!ctx.showSearches){
+      ctx.updateSearchTrue()
+    }
+    
     axios
       .post(process.env.REACT_APP_BACK_POST, {
         search: this.state.search,

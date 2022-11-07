@@ -30,7 +30,34 @@ body {
   width: 100%;
   word-wrap: break-word;
 
-  @media screen and (max-width: 768px){
+  @media screen and (max-width: 768px) {
     font-size: 1rem;
+  }
+}
+
+.hollow-text {
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: #0ee6b7;
+  color: transparent;
+  font-family: Poppins-Bold;
+  font-size: 5rem;
+  overflow: visible;
+}
+
+.conditonal-foom {
+  text-align: center;
+  vertical-align: middle;
+  margin-top: 3rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
+
+  &__h1 {
+    color: black;
+
+  }
+
+  &__h2{
+    color:green;
+    
   }
 }

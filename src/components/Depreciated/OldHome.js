@@ -1,7 +1,6 @@
 import React from "react";
 import "../../sass/main.scss";
 import starImage from "../../images/star-background.jpg";
-import ChessBoard from "./ChessBoard/ChessBoard";
 
 const ChessHero = () => {
   return (

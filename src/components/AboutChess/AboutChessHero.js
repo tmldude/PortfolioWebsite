@@ -11,7 +11,7 @@ import WhatsFoomBox from "./WhatsFoomBox";
 import FooterBox from "./FooterBox";
 import ChessBox from "./ChessBox";
 
-const AboutMeHero = () => {
+const AboutChessHero = () => {
 
   return (
     <section className="section-grid">
@@ -51,4 +51,4 @@ const AboutMeHero = () => {
   );
 };
 
-export default AboutMeHero;
+export default AboutChessHero;

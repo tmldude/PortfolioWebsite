@@ -1,10 +1,12 @@
 import React, { Fragment } from "react";
 import "../sass/main.scss";
 
+import AboutFoomHero from '../components/AboutFoom/AboutFoomHero'
+
 const WhatFoom = () => {
   return (
     <Fragment>
-      <header>FOOM what?!?</header>
+      <AboutFoomHero></AboutFoomHero>
     </Fragment>
   );
 };

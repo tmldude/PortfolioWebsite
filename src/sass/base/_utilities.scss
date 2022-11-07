@@ -9,18 +9,25 @@
   margin: auto;
 }
 
-.loading-thing {
-  color: $color-black;
+.margin-right-small {
+  margin-right: 7rem;
 
-  width: 30%;
-  height: 30%;
-  margin-right: 30%;
-  position: absolute;
-  z-index: 1;
+  @media screen and (max-width: 1100px) {
+    margin-right: 3.5rem;
+  }
 
-  &__text {
-    font-size: 4rem;
-    text-transform: uppercase;
-    animation: spin-anim 5s linear infinite;
+  @media screen and (max-width: 768px) {
+    margin-right: 0;
+
   }
 }
+
+.margin-bot-small {
+  margin-bottom: 0;
+
+  @media screen and (max-width: 768px) {
+    margin-bottom: 3rem;
+
+  }
+}
+

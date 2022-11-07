@@ -206,11 +206,10 @@ class Game extends React.Component {
         ) {
           console.log("choose a black piece");
         } else {
-          console.log("-----------------------------")
-          //console.log(this.minimax(this.state.pieceLoc, 2, this.state.whiteMove))
-          console.log(this.state.pieceLoc[e.target.id].name)
-          console.log(this.state.pieceLoc[e.target.id].hasMoved)
-          console.log("-----------------------------")
+          console.log("-----------------------------");
+          console.log(this.state.pieceLoc[e.target.id].name);
+          console.log(this.state.pieceLoc[e.target.id].hasMoved);
+          console.log("-----------------------------");
           this.setState((state) => {
             return {
               ...state,
@@ -235,12 +234,52 @@ class Game extends React.Component {
     }
   };
 
+  miniMaxRoot = () => {
+    let value = this.state.whiteMove ? Number.MIN_VALUE : Number.MAX_VALUE;
+    let allPosMoves = this.state.whiteMove
+      ? this.getAllPossibleMoves("w")
+      : this.getAllPossibleMoves("b");
+
+    let bestMoves = [];
+    let bestMove = undefined;
+    let bestPoints = value;
+
+    for (let move of allPosMoves) {
+      let copy = copier(this.state.pieceLoc);
+      copy[move[1]] = copy[move[0]];
+      copy[move[0]] = undefined;
+
+      // value = this.state.whiteMove
+      //   ? Math.max(
+      //       value,
+      //       this.minimax(copy, 2, this.state.whiteMove ? false : true)
+      //     )
+      //   : Math.min(
+      //       value,
+      //       this.minimax(copy, 2, this.state.whiteMove ? false : true)
+      //     );
+
+      value = this.minimax(copy, 2, this.state.whiteMove ? false : true);
+      console.log("move: " + move + ". value: " + value + ". BestMove: " + bestMove + ". BestValue: " + bestPoints);
+
+      if (this.state.whiteMove ? value >= bestPoints : value <= bestPoints) {
+        bestMoves.push(move);
+        bestPoints = value;
+        bestMove = move;
+      }
+    }
+    console.log(bestMove);
+    console.log(bestPoints);
+    return bestMove;
+  };
+
   minimax = (pieceLoc, depth, isWhite) => {
     if (depth === 0 || pieceLoc === undefined) {
-      return calculateBoardValue(pieceLoc); //the value of the current pieceLoc
+      let x = calculateBoardValue(pieceLoc);
+      return x; //the value of the current pieceLoc
     } else if (isWhite) {
-      let value = -Number.MAX_VALUE;
-      let allPosMoves = this.getAllPossibleMoves('w');
+      let value = Number.MIN_VALUE;
+      let allPosMoves = this.getAllPossibleMoves("w");
 
       for (let move of allPosMoves) {
         let copy = copier(pieceLoc);
@@ -252,7 +291,7 @@ class Game extends React.Component {
       return value;
     } else {
       let value = Number.MAX_VALUE;
-      let allPosMoves = this.getAllPossibleMoves('b');
+      let allPosMoves = this.getAllPossibleMoves("b");
 
       for (let move of allPosMoves) {
         let copy = copier(pieceLoc);
@@ -267,14 +306,15 @@ class Game extends React.Component {
 
   robotInputHandler = (color) => {
     let allRoboMoves = this.getAllPossibleMoves(color);
+    //let allRoboMoves = this.miniMaxRoot();
 
     if (allRoboMoves.length === 0) {
       this.checkIfCheckmateOrStalemate(allRoboMoves);
     } else {
-      let randElement =
-        allRoboMoves[Math.floor(Math.random() * allRoboMoves.length)];
-
+      let randElement = allRoboMoves[Math.floor(Math.random() * allRoboMoves.length)];
       this.moveFinalizer(randElement[0], randElement[1]);
+
+      //this.moveFinalizer(allRoboMoves[0], allRoboMoves[1]);
     }
   };
 
@@ -404,6 +444,12 @@ class Game extends React.Component {
         }
       }
     }
+    console.log("+++++++++++++++++++++");
+    console.log("moving " + this.state.pieceLoc[start].name + " to " + end);
+    console.log(
+      "kingend = " + kingEnd.toString() + ". End = " + end.toString()
+    );
+    console.log("+++++++++++++++++++++");
 
     if (kingEnd !== end) {
       newLoc[kingEnd] = newLoc[start];
@@ -523,7 +569,7 @@ class Game extends React.Component {
         BoOr ? j < horizontalAxis.length : j >= 0;
         BoOr ? j++ : j--
       ) {
-        let tileColor = boardLightTileColor; //tile color dark
+        let tileColor = boardDarkTileColor; //tile color dark
         let textColor = boardTextColor;
         let numberText = "";
         let letterText = "";
@@ -543,7 +589,7 @@ class Game extends React.Component {
         //change ^Above^ to make the board black or white first
 
         if ((i + j) % 2 === 0) {
-          tileColor = boardDarkTileColor; //tile color lightboard;
+          tileColor = boardLightTileColor; //tile color lightboard;
           //textColor = "black";
         }
         if (BoOr ? j === 0 : j === 7) {
